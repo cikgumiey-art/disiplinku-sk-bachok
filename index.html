@@ -61,14 +61,41 @@ body{
     letter-spacing:.5px;
 }
 
+.score-container{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
 .score{
     background:white;
     border:1px solid #e5e7eb;
     border-radius:14px;
-    padding:11px 15px;
+    padding:10px 14px;
     font-weight:bold;
     white-space:nowrap;
     box-shadow:0 2px 4px rgba(0,0,0,.02);
+    font-size:14px;
+}
+
+.btn-reset-top{
+    background:#fee2e2;
+    color:#dc2626;
+    border:1px solid #fca5a5;
+    border-radius:14px;
+    padding:10px 14px;
+    font-weight:bold;
+    font-size:13px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:all .2s ease;
+}
+
+.btn-reset-top:hover{
+    background:#fecaca;
+    transform:translateY(-1px);
 }
 
 .hero{
@@ -349,8 +376,22 @@ body{
     display:none !important;
 }
 
+/* FOOTER */
+.footer-text{
+    margin-top:30px;
+    text-align:center;
+    font-size:12px;
+    font-weight:800;
+    color:#6b7280;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+    border-top:1px dashed #d1d5db;
+    padding-top:16px;
+}
+
+
 /* =========================================================
-   CETAKAN SIJIL A4 PORTRAIT
+   CETAKAN SIJIL A4 PORTRAIT EXACT
    ========================================================= */
 
 @page{
@@ -360,7 +401,6 @@ body{
 
 @media print{
 
-    /* Saiz halaman fizikal */
     html{
         width:210mm !important;
         height:297mm !important;
@@ -386,14 +426,14 @@ body{
 
     /* Sembunyikan seluruh aplikasi */
     body > .app,
-    #lockedModal{
+    #lockedModal,
+    #resetConfirmModal{
         display:none !important;
     }
 
     /* Paparkan modal sijil sebagai halaman A4 */
     #certModal{
         display:block !important;
-
         position:static !important;
 
         width:210mm !important;
@@ -405,24 +445,14 @@ body{
 
         margin:0 !important;
         padding:0 !important;
-
         background:#ffffff !important;
-
         overflow:hidden !important;
-
         visibility:visible !important;
-
         backdrop-filter:none !important;
     }
 
-    /*
-       SIJIL UTAMA
-       Tepat 210mm × 297mm
-    */
     #printable-certificate{
-
         display:flex !important;
-
         position:relative !important;
 
         width:210mm !important;
@@ -430,7 +460,6 @@ body{
 
         min-width:210mm !important;
         min-height:297mm !important;
-
         max-width:210mm !important;
         max-height:297mm !important;
 
@@ -438,16 +467,12 @@ body{
         padding:10mm !important;
 
         box-sizing:border-box !important;
-
         background:#ffffff !important;
-
         border:8px double #f59e0b !important;
         border-radius:0 !important;
-
         box-shadow:none !important;
 
         overflow:hidden !important;
-
         flex-direction:column !important;
         justify-content:space-between !important;
 
@@ -464,15 +489,9 @@ body{
         visibility:visible !important;
     }
 
-    /*
-       BINGKAI DALAMAN SIJIL
-    */
     #printable-certificate > div:not(.no-print){
-
         display:flex !important;
-
         flex:1 1 auto !important;
-
         width:100% !important;
 
         height:auto !important;
@@ -480,15 +499,11 @@ body{
         max-height:100% !important;
 
         margin:0 !important;
-
         padding:8mm !important;
-
         box-sizing:border-box !important;
 
         background:#fffdfa !important;
-
         border-radius:0 !important;
-
         overflow:hidden !important;
 
         flex-direction:column !important;
@@ -505,7 +520,6 @@ body{
         visibility:visible !important;
     }
 
-    /* Logo sijil */
     #printable-certificate img{
         width:75px !important;
         height:75px !important;
@@ -514,9 +528,6 @@ body{
         margin-right:auto !important;
     }
 
-    /*
-       Kandungan sijil
-    */
     #printable-certificate h1,
     #printable-certificate h2,
     #printable-certificate h3,
@@ -529,7 +540,6 @@ body{
         page-break-inside:avoid !important;
     }
 
-    /* Butang tidak dicetak */
     .no-print,
     #printable-certificate .no-print{
         display:none !important;
@@ -547,6 +557,11 @@ body{
         display:none !important;
     }
 }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media(max-width:600px){
 
@@ -573,7 +588,12 @@ body{
 
     .score{
         font-size:12px;
-        padding:8px 12px;
+        padding:8px 10px;
+    }
+
+    .btn-reset-top{
+        padding:8px 10px;
+        font-size:12px;
     }
 
     .hero{
@@ -607,31 +627,54 @@ body{
 
 <div class="app">
 
+<!-- HEADER -->
 <header class="header">
+
     <div class="brand">
+
         <img
             class="logo"
             src="https://i.postimg.cc/0zKRV0nR/Chat-GPT-Image-May-5-2025-at-07-50-12-PM-2.png"
             alt="Logo SK Bachok"
             onerror="this.src='https://placehold.co/120x120/2563eb/ffffff?text=SKB'"
         >
+
         <div>
             <h1>DisiplinKu</h1>
             <p>SEKOLAH KEBANGSAAN BACHOK</p>
         </div>
+
     </div>
 
-    <div class="score">
-        ⭐ <span id="score">0</span> mata
+    <div class="score-container">
+
+        <div class="score">
+            ⭐ <span id="score">0</span> mata
+        </div>
+
+        <button
+            onclick="openResetModal()"
+            class="btn-reset-top"
+            title="Mula Semula Semua Mata & Cabaran"
+            type="button">
+            <span>🔄</span> Reset
+        </button>
+
     </div>
+
 </header>
 
+
+<!-- HERO -->
 <section class="hero">
+
     <small>SK BACHOK • PEMBELAJARAN DISIPLIN INTERAKTIF</small>
+
     <h2>
         Disiplin membentuk<br>
         masa depan.
     </h2>
+
     <p>
         Kenali peraturan sekolah, fahami barang larangan
         dan uji kemahiran membuat keputusan melalui
@@ -641,42 +684,57 @@ body{
     <div class="progress">
         <div id="progressBar" class="progress-bar"></div>
     </div>
+
 </section>
 
+
+<!-- NAVIGATION -->
 <nav class="nav">
+
     <button class="active" data-page="utama">
         <span>🏠</span>
         Utama
     </button>
+
     <button data-page="peraturan">
         <span>📘</span>
         Peraturan
     </button>
+
     <button data-page="larangan">
         <span>🚫</span>
         Larangan
     </button>
+
     <button data-page="buli">
         <span>🛑</span>
         Info Buli
     </button>
+
     <button data-page="game">
         <span>🎮</span>
         Game
     </button>
+
     <button data-page="pencapaian">
         <span>🏆</span>
         Sijil
     </button>
+
 </nav>
 
+
+<!-- UTAMA -->
 <section id="utama" class="panel page">
+
     <h3>🎯 Misi Pembelajaran</h3>
+
     <p class="subtitle">
         Pilih aktiviti dan kumpul mata disiplin anda.
     </p>
 
     <div class="grid">
+
         <button class="action" data-go="peraturan">
             <b>📖 Kenali Peraturan</b>
             <p>Pelajari amalan murid yang bertanggungjawab.</p>
@@ -701,31 +759,43 @@ body{
             <b>🧠 Kuiz Pantas</b>
             <p>Uji kefahaman dan kumpul mata ganjaran.</p>
         </button>
+
     </div>
 
+
     <div class="stats">
+
         <div class="stat">
             <strong id="level">1</strong>
             <small>TAHAP</small>
         </div>
+
         <div class="stat">
             <strong id="correct">0</strong>
             <small>JAWAPAN BETUL</small>
         </div>
+
         <div class="stat">
             <strong id="badgeCount">1</strong>
             <small>LENCANA</small>
         </div>
+
     </div>
+
 </section>
 
+
+<!-- PERATURAN -->
 <section id="peraturan" class="panel page hidden">
+
     <h3>📘 Peraturan Sekolah</h3>
+
     <p class="subtitle">
         Amalan asas untuk sekolah yang selamat, teratur dan harmoni.
     </p>
 
     <div class="grid">
+
         <div class="card">
             <b>⏰ Tepat Masa</b>
             <p>
@@ -767,16 +837,23 @@ body{
                 Gunakan kemudahan sekolah dengan cermat dan tidak merosakkan perabot atau peralatan sekolah.
             </p>
         </div>
+
     </div>
+
 </section>
 
+
+<!-- LARANGAN -->
 <section id="larangan" class="panel page hidden">
+
     <h3>🚫 Barang Dilarang Dibawa</h3>
+
     <p class="subtitle">
         Barang-barang yang tidak dibenarkan dibawa ke sekolah demi keselamatan dan ketenteraman warga SK Bachok.
     </p>
 
     <div class="grid">
+
         <div class="card">
             <b>🔪 Objek Tajam & Berbahaya</b>
             <p>
@@ -818,133 +895,201 @@ body{
                 Sebarang jenis rokok, vape, atau bahan terlarang yang menyalahi undang-undang dan peraturan disiplin sekolah.
             </p>
         </div>
+
     </div>
+
 </section>
 
+
+<!-- INFO BULI -->
 <section id="buli" class="panel page hidden">
+
     <h3>🛑 Hentikan Buli di Sekolah</h3>
+
     <p class="subtitle">
         Fahami maksud buli, kenali 4 jenis buli, dan bersama kita cipta persekitaran sekolah yang selamat dan harmoni.
     </p>
 
     <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:18px;margin-bottom:18px;">
+
         <b style="color:#dc2626;font-size:16px;display:block;margin-bottom:6px;">
             ❓ Apa itu Buli?
         </b>
+
         <p style="margin:0;font-size:13px;color:#4b5563;line-height:1.6;">
             Buli ialah perbuatan kasar, menyakitkan atau menindas yang dilakukan secara sengaja dan berulang kali oleh individu atau kumpulan terhadap rakan lain yang lebih lemah. Buli adalah amalan salah dan <strong>DILARANG SAMA SEKALI</strong> di Sekolah Kebangsaan Bachok!
         </p>
+
     </div>
+
 
     <h4 style="font-size:16px;font-weight:bold;margin:0 0 12px;color:#1f2937;">
         📌 4 Jenis Buli & Penerangan:
     </h4>
 
+
     <div class="grid" style="margin-bottom:18px;">
+
         <div class="card" style="border-left:5px solid #ef4444;background:#fff;">
+
             <b style="color:#dc2626;font-size:15px;">
                 👊 1. Buli Fizikal
             </b>
+
             <p style="margin-top:4px;">
                 <strong>Penerangan:</strong>
                 Perbuatan mencederakan tubuh badan rakan atau merosakkan harta benda mereka secara sengaja.
             </p>
+
             <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
                 💡 <i>Contoh: Memukul, menendang, menolak, merampas wang, merosakkan alat tulis atau beg rakan.</i>
             </p>
+
         </div>
 
+
         <div class="card" style="border-left:5px solid #f59e0b;background:#fff;">
+
             <b style="color:#d97706;font-size:15px;">
                 🗣️ 2. Buli Lisan (Verbal)
             </b>
+
             <p style="margin-top:4px;">
                 <strong>Penerangan:</strong>
                 Menggunakan perkataan atau tutur kata yang kasar dan menyakitkan hati untuk menghina atau merendah-rendahkan orang lain.
             </p>
+
             <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
                 💡 <i>Contoh: Mengejek nama ibu bapa, memanggil dengan gelaran buruk, memaki, menghina fizikal, atau mengancam.</i>
             </p>
+
         </div>
 
+
         <div class="card" style="border-left:5px solid #3b82f6;background:#fff;">
+
             <b style="color:#2563eb;font-size:15px;">
                 👥 3. Buli Sosial (Relasional)
             </b>
+
             <p style="margin-top:4px;">
                 <strong>Penerangan:</strong>
                 Tindakan merosakkan hubungan persahabatan, reputasi, atau kedudukan seseorang rakan dalam kumpulan.
             </p>
+
             <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
                 💡 <i>Contoh: Memulaukan rakan, menyebarkan fitnah/khabar angin palsu, dan mengajak orang lain membenci atau mengabaikan rakan tersebut.</i>
             </p>
+
         </div>
 
+
         <div class="card" style="border-left:5px solid #8b5cf6;background:#fff;">
+
             <b style="color:#7c3aed;font-size:15px;">
                 💻 4. Buli Siber
             </b>
+
             <p style="margin-top:4px;">
                 <strong>Penerangan:</strong>
                 Perbuatan membuli dan mengganggu yang dilakukan menggunakan peranti elektronik, aplikasi media sosial, atau perkhidmatan mesej.
             </p>
+
             <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
                 💡 <i>Contoh: Menghantar mesej jelik/ugutan, menyebarkan gambar aib tanpa izin, atau mengejek rakan di alam maya.</i>
             </p>
+
         </div>
+
     </div>
 
+
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:18px;">
+
         <b style="color:#2563eb;font-size:15px;display:block;margin-bottom:8px;">
             🛡️ Langkah Tindakan Jika Kamu Dibuli atau Melihat Buli:
         </b>
+
         <ul style="margin:0;padding-left:20px;font-size:13px;color:#374151;line-height:1.7;">
+
             <li>
                 <strong>Katakan TIDAK dengan tegas:</strong>
                 Beritahu pembuli untuk berhenti dengan berani dan yakin.
             </li>
+
             <li>
                 <strong>Jangan berdiam diri:</strong>
                 Laporkan SEGERA kepada Guru Disiplin, Guru Bimbingan & Kaunseling, atau Guru Kelas.
             </li>
+
             <li>
                 <strong>Bantu rakan yang dibuli:</strong>
                 Berikan sokongan moral dan elakkan daripada menjadi penonton sahaja.
             </li>
+
         </ul>
+
     </div>
+
 </section>
 
+
+<!-- GAME -->
 <section id="game" class="panel page hidden">
+
     <h3>🎮 Cabaran Disiplin</h3>
+
     <p class="subtitle">
         Pilih tindakan paling tepat dalam setiap situasi harian.
     </p>
 
     <div class="game-box">
+
         <div id="gameContent">
+
             <span class="tag">
                 SITUASI <span id="gameNumber">1 / 7</span>
             </span>
+
             <div id="gameQuestion" class="question"></div>
+
             <div id="gameChoices" class="choices"></div>
+
             <div id="gameFeedback" class="feedback hidden"></div>
+
             <button id="gameNext" class="next hidden" type="button">
                 Cabaran Seterusnya →
             </button>
+
         </div>
+
 
         <div id="gameComplete"
              class="hidden"
              style="text-align:center;padding:20px 10px;">
-            <div style="font-size:56px;margin-bottom:8px;">🎉</div>
-            <h3 style="font-size:26px;font-weight:900;color:#16a34a;margin-bottom:8px;">
+
+            <div style="font-size:56px;margin-bottom:8px;">
+                🎉
+            </div>
+
+            <h3 style="font-size:28px;font-weight:900;color:#16a34a;margin-bottom:8px;">
                 TAHNIAH !
             </h3>
+
             <p style="font-size:15px;color:#4b5563;margin-bottom:22px;line-height:1.5;">
-                Anda telah berjaya menyempurnakan <strong>semua soalan Cabaran Disiplin</strong>!
+                Anda telah berjaya menyempurnakan
+                <strong>semua soalan Cabaran Disiplin</strong>! Sijil Penghargaan anda sedia untuk dicetak.
             </p>
+
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+
+                <button
+                    onclick="openCertificate()"
+                    class="next"
+                    style="margin:0;background:#10b981;padding:12px 24px;font-size:15px;box-shadow:0 4px 12px rgba(16,185,129,0.3);">
+                    🎓 Buka & Cetak Sijil Sekarang
+                </button>
+
                 <button
                     onclick="showPage('kuiz')"
                     class="next"
@@ -952,47 +1097,71 @@ body{
                     🧠 Cuba Kuiz Pantas
                 </button>
 
-                <button
-                    onclick="showPage('pencapaian')"
-                    class="next"
-                    style="margin:0;background:#f59e0b;padding:12px 20px;font-size:14px;">
-                    🏆 Semak & Cetak Sijil
-                </button>
             </div>
+
         </div>
+
     </div>
+
 </section>
 
+
+<!-- KUIZ -->
 <section id="kuiz" class="panel page hidden">
+
     <h3>🧠 Kuiz Pantas</h3>
+
     <p class="subtitle">
         Uji kefahaman anda mengenai peraturan dan sahsiah terpuji.
     </p>
 
     <div class="game-box">
+
         <div id="quizContent">
+
             <span class="tag">
                 SOALAN <span id="quizNumber">1 / 7</span>
             </span>
+
             <div id="quizQuestion" class="question"></div>
+
             <div id="quizChoices" class="choices"></div>
+
             <div id="quizFeedback" class="feedback hidden"></div>
+
             <button id="quizNext" class="next hidden" type="button">
                 Soalan Seterusnya →
             </button>
+
         </div>
+
 
         <div id="quizComplete"
              class="hidden"
              style="text-align:center;padding:20px 10px;">
-            <div style="font-size:56px;margin-bottom:8px;">🎉</div>
-            <h3 style="font-size:26px;font-weight:900;color:#16a34a;margin-bottom:8px;">
+
+            <div style="font-size:56px;margin-bottom:8px;">
+                🎉
+            </div>
+
+            <h3 style="font-size:28px;font-weight:900;color:#16a34a;margin-bottom:8px;">
                 TAHNIAH !
             </h3>
+
             <p style="font-size:15px;color:#4b5563;margin-bottom:22px;line-height:1.5;">
-                Anda telah berjaya menyempurnakan <strong>semua soalan Kuiz Pantas</strong>!
+                Anda telah berjaya menyempurnakan
+                <strong>semua soalan Kuiz Pantas</strong>! Sijil Penghargaan anda sedia untuk dicetak.
             </p>
+
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+
+                <button
+                    onclick="openCertificate()"
+                    class="next"
+                    style="margin:0;background:#10b981;padding:12px 24px;font-size:15px;box-shadow:0 4px 12px rgba(16,185,129,0.3);">
+                    🎓 Buka & Cetak Sijil Sekarang
+                </button>
+
                 <button
                     onclick="showPage('game')"
                     class="next"
@@ -1000,77 +1169,110 @@ body{
                     🎮 Main Cabaran Disiplin
                 </button>
 
-                <button
-                    onclick="showPage('pencapaian')"
-                    class="next"
-                    style="margin:0;background:#f59e0b;padding:12px 20px;font-size:14px;">
-                    🏆 Semak & Cetak Sijil
-                </button>
             </div>
+
         </div>
+
     </div>
+
 </section>
 
+
+<!-- PENCAPAIAN / SIJIL -->
 <section id="pencapaian" class="panel page hidden">
+
     <h3>🏆 Sijil & Pencapaian</h3>
+
     <p class="subtitle">
         Lengkapkan cabaran untuk menjana Sijil Penghargaan Amalan Baik.
     </p>
+
 
     <div
         id="certRequirementBox"
         class="card"
         style="margin-bottom:16px;background:#fffbeb;border-color:#fcd34d;transition:all .3s ease;">
+
         <div style="display:flex;align-items:center;gap:12px;">
-            <span style="font-size:28px;" id="certStatusIcon">🔒</span>
+
+            <span style="font-size:28px;" id="certStatusIcon">
+                🔒
+            </span>
+
             <div>
-                <b id="certStatusTitle" style="color:#b45309;font-size:15px;">
+
+                <b
+                    id="certStatusTitle"
+                    style="color:#b45309;font-size:15px;">
                     Status Sijil: Terkunci
                 </b>
+
                 <p id="certStatusDesc" style="margin-top:2px;">
-                    Kamu perlu menjawab sekurang-kurangnya <b>4 soalan dengan betul</b> dalam Cabaran / Kuiz untuk membuka sijil.
+                    Kamu perlu menjawab sekurang-kurangnya
+                    <b>4 soalan dengan betul</b>
+                    dalam Cabaran / Kuiz untuk membuka sijil.
                 </p>
+
             </div>
+
         </div>
 
-        <div style="margin-top:12px;background:#e5e7eb;border-radius:10px;height:10px;overflow:hidden;">
+
+        <div
+            style="margin-top:12px;background:#e5e7eb;border-radius:10px;height:10px;overflow:hidden;">
+
             <div
                 id="certProgressBar"
                 style="width:0%;height:100%;background:#f59e0b;transition:.4s ease;">
             </div>
+
         </div>
+
 
         <small
             id="certProgressText"
             style="display:block;margin-top:6px;text-align:right;font-weight:bold;color:#b45309;">
             0 / 4 Jawapan Betul (0%)
         </small>
+
     </div>
 
+
     <div class="game-box" style="margin-bottom:20px;">
+
         <div style="margin-bottom:12px;">
-            <label style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
+
+            <label
+                style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
                 NAMA PENUH MURID:
             </label>
+
             <input
                 type="text"
                 id="studentNameInput"
                 oninput="saveStudentProfile()"
                 placeholder="Cth: MUHAMMAD AMMAR BIN ZULKIFLI"
                 style="width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;outline:none;">
+
         </div>
 
+
         <div>
-            <label style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
+
+            <label
+                style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
                 KELAS / TAHUN:
             </label>
+
             <input
                 type="text"
                 id="studentClassInput"
                 oninput="saveStudentProfile()"
                 placeholder="Cth: 5 BESTARI"
                 style="width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;outline:none;">
+
         </div>
+
 
         <button
             id="certBtn"
@@ -1079,28 +1281,89 @@ body{
             style="width:100%;margin-top:16px;background:#f59e0b;color:#fff;font-size:15px;padding:13px;transition:background .3s ease;">
             🔒 Sijil Terkunci (Selesaikan Cabaran)
         </button>
+
     </div>
+
 </section>
 
-<footer class="no-print" style="text-align:center;margin-top:24px;padding:16px 0 8px;color:#6b7280;font-size:12px;font-weight:bold;letter-spacing:0.5px;">
+<!-- FOOTER -->
+<footer class="footer-text">
     DISEDIAKAN UNIT HEM-BADAN DISIPLIN SK BACHOK 2026
 </footer>
 
 </div>
 
+
+<!-- =========================================================
+     MODAL CONFIRMATION RESET
+     ========================================================= -->
+<div
+    id="resetConfirmModal"
+    class="hidden"
+    style="position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;">
+
+    <div style="background:#fff;padding:24px;border-radius:24px;max-width:400px;width:100%;text-align:center;border:3px solid #fca5a5;box-shadow:0 10px 25px rgba(0,0,0,0.2);">
+
+        <div style="font-size:48px;margin-bottom:10px;">🔄</div>
+
+        <h3 style="font-size:20px;font-weight:bold;color:#991b1b;margin-bottom:8px;">
+            Mula Semula Semua Progress?
+        </h3>
+
+        <p style="font-size:13px;color:#4b5563;line-height:1.5;margin-bottom:20px;">
+            Adakah anda pasti mahu menetapkan semula? Semua mata, jawapan betul, lencana, dan nama murid akan dikosongkan.
+        </p>
+
+        <div style="display:flex;gap:10px;justify-content:center;">
+
+            <button
+                onclick="executeResetAll()"
+                class="next"
+                style="margin:0;background:#ef4444;color:white;padding:11px 20px;font-size:13px;">
+                Ya, Reset Sekarang
+            </button>
+
+            <button
+                onclick="closeResetModal()"
+                class="next"
+                style="margin:0;background:#e5e7eb;color:#374151;padding:11px 18px;font-size:13px;">
+                Batal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LOCKED MODAL
+     ========================================================= -->
+
 <div
     id="lockedModal"
     class="hidden"
     style="position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;">
+
     <div
         class="bg-white text-slate-900 p-6 rounded-3xl max-w-md w-full border-4 border-amber-400 shadow-2xl text-center"
         style="background:#fff;">
-        <div style="font-size:52px;margin-bottom:8px;">🔒</div>
+
+        <div style="font-size:52px;margin-bottom:8px;">
+            🔒
+        </div>
+
         <h3 style="font-size:20px;font-weight:bold;color:#1f2937;margin-bottom:8px;">
             Sijil Masih Terkunci!
         </h3>
+
         <p style="font-size:13px;color:#4b5563;line-height:1.5;margin-bottom:16px;">
-            Anda perlu menjawab sekurang-kurangnya <strong>4 soalan dengan betul</strong> dalam <strong>Cabaran Disiplin</strong> atau <strong>Kuiz Pantas</strong> untuk melayakkan diri mendapat Sijil Penghargaan.
+            Anda perlu menjawab sekurang-kurangnya
+            <strong>4 soalan dengan betul</strong>
+            dalam <strong>Cabaran Disiplin</strong>
+            atau <strong>Kuiz Pantas</strong>
+            untuk melayakkan diri mendapat Sijil Penghargaan.
         </p>
 
         <div
@@ -1110,26 +1373,37 @@ body{
         </div>
 
         <div style="display:flex;gap:10px;justify-content:center;">
+
             <button
                 onclick="closeLockedModal();showPage('game');"
                 class="next"
                 style="margin:0;background:#2563eb;padding:10px 18px;font-size:13px;">
                 🎮 Main Game Sekarang
             </button>
+
             <button
                 onclick="closeLockedModal()"
                 class="next"
                 style="margin:0;background:#e5e7eb;color:#374151;padding:10px 16px;font-size:13px;">
                 Tutup
             </button>
+
         </div>
+
     </div>
+
 </div>
+
+
+<!-- =========================================================
+     CERTIFICATE MODAL
+     ========================================================= -->
 
 <div
     id="certModal"
     class="hidden"
     style="position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
+
     <div
         id="printable-certificate"
         class="bg-white text-slate-900 relative"
@@ -1137,15 +1411,21 @@ body{
 
         <button
             onclick="closeCertificate()"
-            class="no-print absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full font-bold flex items-center justify-center">
+            class="no-print absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full font-bold flex items-center justify-center"
+            type="button">
             ✕
         </button>
 
+
+        <!-- BINGKAI DALAMAN -->
         <div
             style="background:#fffdfa;height:100%;"
             class="text-center border-4 border-dashed border-amber-300 p-6 sm:p-8 rounded-2xl relative flex flex-col justify-between">
 
+
+            <!-- BAHAGIAN ATAS -->
             <div>
+
                 <img
                     src="https://i.postimg.cc/0zKRV0nR/Chat-GPT-Image-May-5-2025-at-07-50-12-PM-2.png"
                     alt="Logo SKB"
@@ -1153,23 +1433,32 @@ body{
                     onerror="this.src='https://placehold.co/120x120/2563eb/ffffff?text=SKB'"
                 >
 
-                <h2 style="font-size:13px;letter-spacing:2px;color:#6b7280;font-weight:bold;margin:0;">
+
+                <h2
+                    style="font-size:13px;letter-spacing:2px;color:#6b7280;font-weight:bold;margin:0;">
                     SEKOLAH KEBANGSAAN BACHOK
                 </h2>
 
-                <h3 style="font-size:22px;font-weight:900;color:#1f2937;margin:10px 0 6px;text-transform:uppercase;">
+
+                <h3
+                    style="font-size:22px;font-weight:900;color:#1f2937;margin:10px 0 6px;text-transform:uppercase;">
                     SIJIL PENGHARGAAN AMALAN BAIK
                 </h3>
 
-                <p style="font-size:12px;color:#4b5563;margin:0;font-weight:600;">
+
+                <p
+                    style="font-size:12px;color:#4b5563;margin:0;font-weight:600;">
                     Modul Pembelajaran Disiplin & Sahsiah Murid
                 </p>
 
-                <p style="font-size:12px;color:#6b7280;margin:24px 0 6px;">
+
+                <p
+                    style="font-size:12px;color:#6b7280;margin:20px 0 6px;">
                     Dengan ini disahkan bahawa
                 </p>
 
-                <div style="margin:14px 0 22px;">
+
+                <div style="margin:12px 0 16px;">
 
                     <span
                         id="certStudentName"
@@ -1183,135 +1472,260 @@ body{
                         KELAS
                     </span>
 
-                    <span
-                        id="certStudentScore"
-                        style="font-size:13px;font-weight:bold;color:#d97706;margin-top:6px;display:block;">
+                </div>
+
+                <!-- PAPARAN MATA DALAM SIJIL -->
+                <div style="display:inline-block;background:#fef3c7;border:1px solid #fde68a;padding:6px 16px;border-radius:20px;margin-bottom:16px;">
+                    <span id="certScoreDisplay" style="font-size:13px;font-weight:bold;color:#b45309;">
                         ⭐ JUMLAH MATA DISIPLIN: 0 MATA
                     </span>
-
                 </div>
 
-                <p style="font-size:13px;color:#374151;line-height:1.7;max-width:440px;margin:0 auto;">
-                    Telah berjaya menyempurnakan Modul Pembelajaran Interaktif <strong>DisiplinKu</strong> dengan cemerlang dan mengamalkan sahsiah terpuji di Sekolah Kebangsaan Bachok.
+
+                <p
+                    style="font-size:13px;color:#374151;line-height:1.7;max-width:440px;margin:0 auto;">
+
+                    Telah berjaya menyempurnakan Modul Pembelajaran Interaktif
+                    <strong>DisiplinKu</strong>
+                    dengan cemerlang dan mengamalkan sahsiah terpuji di Sekolah Kebangsaan Bachok.
+
                 </p>
+
             </div>
 
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;text-align:center;">
+
+            <!-- BAHAGIAN BAWAH -->
+            <div
+                style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px;padding-top:20px;border-top:1px solid #e5e7eb;text-align:center;">
+
                 <div style="text-align:left;">
-                    <p style="font-size:11px;font-weight:bold;color:#1f2937;margin:0;">
+
+                    <p
+                        style="font-size:11px;font-weight:bold;color:#1f2937;margin:0;">
                         UNIT DISIPLIN & HEM
                     </p>
-                    <p style="font-size:10px;color:#6b7280;margin:2px 0 0;">
+
+                    <p
+                        style="font-size:10px;color:#6b7280;margin:2px 0 0;">
                         SK Bachok, Kelantan
                     </p>
+
                 </div>
+
 
                 <div>
-                    <i class="fas fa-certificate" style="font-size:40px;color:#f59e0b;"></i>
+
+                    <i
+                        class="fas fa-certificate"
+                        style="font-size:40px;color:#f59e0b;">
+                    </i>
+
                 </div>
+
 
                 <div style="text-align:right;">
-                    <p style="font-size:12px;font-weight:bold;color:#1f2937;margin:0;text-transform:uppercase;">
+
+                    <p
+                        style="font-size:12px;font-weight:bold;color:#1f2937;margin:0;text-transform:uppercase;">
                         PUAN SITI WAHIDA BT TAIB
                     </p>
-                    <p style="font-size:11px;font-weight:bold;color:#2563eb;margin:1px 0 0;">
+
+                    <p
+                        style="font-size:11px;font-weight:bold;color:#2563eb;margin:1px 0 0;">
                         Guru Besar
                     </p>
-                    <p style="font-size:10px;color:#6b7280;margin:1px 0 0;">
+
+                    <p
+                        style="font-size:10px;color:#6b7280;margin:1px 0 0;">
                         SK Bachok
                     </p>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="no-print" style="margin-top:20px;display:flex;gap:10px;justify-content:center;">
+
+        <!-- BUTANG CETAK -->
+        <div
+            class="no-print"
+            style="margin-top:20px;display:flex;gap:10px;justify-content:center;">
+
             <button
                 onclick="window.print()"
                 class="next"
-                style="margin:0;background:#2563eb;padding:10px 22px;font-size:14px;">
+                style="margin:0;background:#2563eb;padding:10px 22px;font-size:14px;"
+                type="button">
                 🖨️ Cetak / Simpan PDF
             </button>
+
             <button
                 onclick="closeCertificate()"
                 class="next"
-                style="margin:0;background:#e5e7eb;color:#374151;padding:10px 20px;font-size:14px;">
+                style="margin:0;background:#e5e7eb;color:#374151;padding:10px 20px;font-size:14px;"
+                type="button">
                 Tutup
             </button>
+
         </div>
+
     </div>
+
 </div>
 
+
 <script>
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+
 function getStorage(key,fallback=''){
+
     try{
+
         const val=localStorage.getItem(key);
+
         return val!==null ? val : fallback;
+
     }catch(e){
+
         return fallback;
+
     }
+
 }
+
 
 function setStorage(key,value){
+
     try{
+
         localStorage.setItem(key,value);
-    }catch(e){}
+
+    }catch(e){
+
+    }
+
 }
 
+
+/* =========================================================
+   DATA & STATE
+   ========================================================= */
+
 let score=parseInt(getStorage('disiplinku_score','0'))||0;
+
 let correct=parseInt(getStorage('disiplinku_correct','0'))||0;
+
 let studentName=getStorage('disiplinku_student_name','');
+
 let studentClass=getStorage('disiplinku_student_class','');
 
 let gameIndex=0;
+
 let quizIndex=0;
+
 const REQUIRED_CORRECT=4;
+
 let audioCtx=null;
 
+
+/* =========================================================
+   SOUND SYNTHESIZER
+   ========================================================= */
+
 function playSound(type){
+
     try{
+
         const AudioCtx=window.AudioContext||window.webkitAudioContext;
+
         if(!AudioCtx)return;
+
         if(!audioCtx)audioCtx=new AudioCtx();
+
         if(audioCtx.state==='suspended')audioCtx.resume();
 
         const osc=audioCtx.createOscillator();
+
         const gain=audioCtx.createGain();
+
         osc.connect(gain);
+
         gain.connect(audioCtx.destination);
 
         const now=audioCtx.currentTime;
 
+
         if(type==='correct'){
+
             osc.type='triangle';
+
             osc.frequency.setValueAtTime(523.25,now);
+
             osc.frequency.exponentialRampToValueAtTime(659.25,now+.1);
+
             osc.frequency.exponentialRampToValueAtTime(783.99,now+.2);
+
             gain.gain.setValueAtTime(.3,now);
+
             gain.gain.exponentialRampToValueAtTime(.01,now+.35);
+
             osc.start(now);
+
             osc.stop(now+.35);
+
         }
+
         else if(type==='wrong'){
+
             osc.type='sawtooth';
+
             osc.frequency.setValueAtTime(220,now);
+
             osc.frequency.exponentialRampToValueAtTime(164.81,now+.2);
+
             gain.gain.setValueAtTime(.3,now);
+
             gain.gain.exponentialRampToValueAtTime(.01,now+.3);
+
             osc.start(now);
+
             osc.stop(now+.3);
+
         }
+
         else if(type==='click'){
+
             osc.type='sine';
+
             osc.frequency.setValueAtTime(400,now);
+
             gain.gain.setValueAtTime(.1,now);
+
             gain.gain.exponentialRampToValueAtTime(.01,now+.05);
+
             osc.start(now);
+
             osc.stop(now+.05);
+
         }
-    }catch(e){}
+
+    }catch(e){
+
+    }
+
 }
 
+
+/* =========================================================
+   GAME DATA
+   ========================================================= */
+
 const games=[
+
 {
 question:"Kamu ternampak sampah di bawah meja selepas rehat. Apakah tindakan terbaik?",
 choices:[
@@ -1388,9 +1802,16 @@ choices:[
 answer:1,
 explanation:"Menepati masa dan bersedia sebelum guru masuk ke kelas memastikan pembelajaran berjalan lancar."
 }
+
 ];
 
+
+/* =========================================================
+   QUIZ DATA
+   ========================================================= */
+
 const quizzes=[
+
 {
 question:"Apakah tujuan utama peraturan sekolah diwujudkan?",
 choices:[
@@ -1467,200 +1888,373 @@ choices:[
 answer:1,
 explanation:"Menyerahkan barang hilang kepada guru adalah amalan bersikap jujur dan berintegriti."
 }
+
 ];
 
+
+/* =========================================================
+   STUDENT PROFILE & SCORES
+   ========================================================= */
+
 function saveStudentProfile(){
+
     const nameEl=document.getElementById("studentNameInput");
+
     const classEl=document.getElementById("studentClassInput");
 
     if(nameEl)studentName=nameEl.value;
+
     if(classEl)studentClass=classEl.value;
 
     setStorage('disiplinku_student_name',studentName);
+
     setStorage('disiplinku_student_class',studentClass);
+
 }
 
+
 function updateCertStatus(){
+
     const reqBox=document.getElementById("certRequirementBox");
+
     const certBtn=document.getElementById("certBtn");
+
     const icon=document.getElementById("certStatusIcon");
+
     const title=document.getElementById("certStatusTitle");
+
     const desc=document.getElementById("certStatusDesc");
+
     const progressText=document.getElementById("certProgressText");
+
     const progressBar=document.getElementById("certProgressBar");
 
+
     if(!reqBox)return;
+
 
     let percent=Math.min(
         100,
         Math.floor((correct/REQUIRED_CORRECT)*100)
     );
 
+
     if(progressBar)
         progressBar.style.width=percent+"%";
+
 
     if(progressText)
         progressText.textContent=
         `${correct} / ${REQUIRED_CORRECT} Jawapan Betul (${percent}%)`;
 
+
     if(correct>=REQUIRED_CORRECT){
+
         reqBox.style.background="#ecfdf5";
+
         reqBox.style.borderColor="#6ee7b7";
+
         if(icon)icon.textContent="🎉";
 
+
         if(title){
+
             title.textContent="Tahniah! Sijil Telah Terbuka";
+
             title.style.color="#047857";
+
         }
+
 
         if(desc)
             desc.textContent=
             "Kamu telah berjaya menjawab soalan dengan betul dan layak mendapat Sijil Penghargaan!";
 
+
         if(progressText)
             progressText.style.color="#047857";
 
+
         if(certBtn){
+
             certBtn.style.background="#10b981";
+
             certBtn.innerHTML="✨ Jana & Cetak Sijil Rasmi";
+
         }
+
     }
     else{
+
         reqBox.style.background="#fffbeb";
+
         reqBox.style.borderColor="#fcd34d";
+
         if(icon)icon.textContent="🔒";
 
+
         if(title){
+
             title.textContent="Status Sijil: Terkunci";
+
             title.style.color="#b45309";
+
         }
 
+
         if(desc){
+
             desc.textContent=
             `Jawab sekurang-kurangnya ${REQUIRED_CORRECT} soalan dengan betul dalam Cabaran / Kuiz untuk membuka sijil.`;
+
         }
+
 
         if(progressText)
             progressText.style.color="#b45309";
 
+
         if(certBtn){
+
             certBtn.style.background="#f59e0b";
+
             certBtn.innerHTML=
             "🔒 Sijil Terkunci (Selesaikan Cabaran)";
+
         }
+
     }
+
 }
 
+
 function updateScore(){
+
     const scoreEl=document.getElementById("score");
+
     const correctEl=document.getElementById("correct");
+
     const levelEl=document.getElementById("level");
+
     const badgeEl=document.getElementById("badgeCount");
+
     const progressEl=document.getElementById("progressBar");
+
 
     if(scoreEl)
         scoreEl.textContent=score;
 
+
     if(correctEl)
         correctEl.textContent=correct;
+
 
     if(levelEl)
         levelEl.textContent=
         Math.max(1,Math.floor(score/30)+1);
 
+
     if(badgeEl)
         badgeEl.textContent=
         Math.max(1,Math.floor(correct/2)+1);
 
+
     if(progressEl){
+
         let progress=(score%30)/30*100;
+
         progressEl.style.width=progress+"%";
+
     }
 
+
     setStorage('disiplinku_score',score);
+
     setStorage('disiplinku_correct',correct);
+
     updateCertStatus();
+
 }
 
+
+/* =========================================================
+   RESET FUNCTIONALITY & NAVIGATION
+   ========================================================= */
+
+function openResetModal(){
+    playSound('click');
+    const modal = document.getElementById("resetConfirmModal");
+    if(modal) modal.classList.remove("hidden");
+}
+
+function closeResetModal(){
+    playSound('click');
+    const modal = document.getElementById("resetConfirmModal");
+    if(modal) modal.classList.add("hidden");
+}
+
+function executeResetAll(){
+    playSound('click');
+    
+    try{
+        localStorage.removeItem('disiplinku_score');
+        localStorage.removeItem('disiplinku_correct');
+        localStorage.removeItem('disiplinku_student_name');
+        localStorage.removeItem('disiplinku_student_class');
+    }catch(e){}
+
+    score = 0;
+    correct = 0;
+    studentName = '';
+    studentClass = '';
+    gameIndex = 0;
+    quizIndex = 0;
+
+    const nameInput = document.getElementById("studentNameInput");
+    const classInput = document.getElementById("studentClassInput");
+    if(nameInput) nameInput.value = '';
+    if(classInput) classInput.value = '';
+
+    updateScore();
+    renderGame();
+    renderQuiz();
+    closeResetModal();
+    showPage('utama');
+}
+
+
 function showPage(page){
+
     playSound('click');
 
+
     document.querySelectorAll(".page").forEach(section=>{
+
         section.classList.add("hidden");
+
     });
 
+
     const target=document.getElementById(page);
+
     if(target)
         target.classList.remove("hidden");
 
+
     document.querySelectorAll(".nav button").forEach(button=>{
+
         button.classList.toggle(
             "active",
             button.dataset.page===page
         );
+
     });
+
 
     if(page==="game")
         renderGame();
 
+
     if(page==="kuiz")
         renderQuiz();
 
+
     if(page==="pencapaian")
         updateCertStatus();
+
 }
 
+
+/* =========================================================
+   GAME & QUIZ RENDERING
+   ========================================================= */
+
 function renderGame(){
+
     const contentEl=document.getElementById("gameContent");
+
     const completeEl=document.getElementById("gameComplete");
 
+
     if(gameIndex>=games.length){
+
         if(contentEl)
             contentEl.classList.add("hidden");
+
 
         if(completeEl)
             completeEl.classList.remove("hidden");
 
+
         if(typeof confetti==="function"){
+
             confetti({
                 particleCount:90,
                 spread:70,
                 origin:{y:.6}
             });
+
         }
+
+        setTimeout(()=>{
+            if(correct >= REQUIRED_CORRECT){
+                openCertificate();
+            }
+        }, 800);
+
         return;
+
     }
+
 
     if(contentEl)
         contentEl.classList.remove("hidden");
 
+
     if(completeEl)
         completeEl.classList.add("hidden");
 
+
     const game=games[gameIndex];
+
     const numEl=document.getElementById("gameNumber");
+
     const qEl=document.getElementById("gameQuestion");
+
     const choices=document.getElementById("gameChoices");
+
     const fbEl=document.getElementById("gameFeedback");
+
     const nextBtn=document.getElementById("gameNext");
+
 
     if(numEl)
         numEl.textContent=
         `${gameIndex+1} / ${games.length}`;
 
+
     if(qEl)
         qEl.textContent=game.question;
 
+
     if(choices){
+
         choices.innerHTML="";
 
+
         game.choices.forEach((choice,index)=>{
+
             const button=document.createElement("button");
+
             button.className="choice";
+
             button.textContent=choice;
+
             button.type="button";
 
+
             button.addEventListener("click",()=>{
+
                 checkAnswer(
                     index,
                     game.answer,
@@ -1669,70 +2263,113 @@ function renderGame(){
                     nextBtn,
                     choices
                 );
+
             });
 
+
             choices.appendChild(button);
+
         });
+
     }
+
 
     if(fbEl)
         fbEl.classList.add("hidden");
 
+
     if(nextBtn)
         nextBtn.classList.add("hidden");
+
 }
 
+
 function renderQuiz(){
+
     const contentEl=document.getElementById("quizContent");
+
     const completeEl=document.getElementById("quizComplete");
 
+
     if(quizIndex>=quizzes.length){
+
         if(contentEl)
             contentEl.classList.add("hidden");
+
 
         if(completeEl)
             completeEl.classList.remove("hidden");
 
+
         if(typeof confetti==="function"){
+
             confetti({
                 particleCount:90,
                 spread:70,
                 origin:{y:.6}
             });
+
         }
+
+        setTimeout(()=>{
+            if(correct >= REQUIRED_CORRECT){
+                openCertificate();
+            }
+        }, 800);
+
         return;
+
     }
+
 
     if(contentEl)
         contentEl.classList.remove("hidden");
 
+
     if(completeEl)
         completeEl.classList.add("hidden");
 
+
     const quiz=quizzes[quizIndex];
+
     const numEl=document.getElementById("quizNumber");
+
     const qEl=document.getElementById("quizQuestion");
+
     const choices=document.getElementById("quizChoices");
+
     const fbEl=document.getElementById("quizFeedback");
+
     const nextBtn=document.getElementById("quizNext");
+
 
     if(numEl)
         numEl.textContent=
         `${quizIndex+1} / ${quizzes.length}`;
 
+
     if(qEl)
         qEl.textContent=quiz.question;
 
+
     if(choices){
+
         choices.innerHTML="";
 
+
         quiz.choices.forEach((choice,index)=>{
+
             const button=document.createElement("button");
+
             button.className="choice";
+
             button.textContent=choice;
+
             button.type="button";
 
+
             button.addEventListener("click",()=>{
+
                 checkAnswer(
                     index,
                     quiz.answer,
@@ -1741,18 +2378,30 @@ function renderQuiz(){
                     nextBtn,
                     choices
                 );
+
             });
 
+
             choices.appendChild(button);
+
         });
+
     }
+
 
     if(fbEl)
         fbEl.classList.add("hidden");
 
+
     if(nextBtn)
         nextBtn.classList.add("hidden");
+
 }
+
+
+/* =========================================================
+   CHECK ANSWER & MODALS
+   ========================================================= */
 
 function checkAnswer(
     selected,
@@ -1762,50 +2411,80 @@ function checkAnswer(
     nextBtnEl,
     choicesEl
 ){
+
     if(choicesEl){
+
         const btns=choicesEl.querySelectorAll("button");
 
+
         btns.forEach((btn,idx)=>{
+
             btn.disabled=true;
+
 
             if(idx===answer)
                 btn.classList.add("correct-choice");
+
             else if(idx===selected)
                 btn.classList.add("wrong-choice");
+
         });
+
     }
+
 
     if(selected===answer){
+
         playSound('correct');
+
         score+=10;
+
         correct++;
 
-        if(feedbackEl){
-            feedbackEl.innerHTML=
-            `🎉 <strong>Betul! +10 mata.</strong><br>${explanation}`;
-            feedbackEl.style.background="#dcfce7";
-            feedbackEl.style.color="#15803d";
-        }
-    }
-    else{
-        playSound('wrong');
 
         if(feedbackEl){
+
+            feedbackEl.innerHTML=
+            `🎉 <strong>Betul! +10 mata.</strong><br>${explanation}`;
+
+            feedbackEl.style.background="#dcfce7";
+
+            feedbackEl.style.color="#15803d";
+
+        }
+
+    }
+    else{
+
+        playSound('wrong');
+
+
+        if(feedbackEl){
+
             feedbackEl.innerHTML=
             `💡 <strong>Belum tepat.</strong><br>${explanation}`;
+
             feedbackEl.style.background="#fee2e2";
+
             feedbackEl.style.color="#b91c1c";
+
         }
+
     }
+
 
     if(feedbackEl)
         feedbackEl.classList.remove("hidden");
 
+
     if(nextBtnEl)
         nextBtnEl.classList.remove("hidden");
 
+
     updateScore();
+
 }
+
 
 function openCertificate(){
 
@@ -1863,7 +2542,7 @@ function openCertificate(){
 
 
     const certScore=
-        document.getElementById("certStudentScore");
+        document.getElementById("certScoreDisplay");
 
 
     const certModal=
@@ -1898,23 +2577,40 @@ function openCertificate(){
 
 }
 
+
 function closeLockedModal(){
+
     playSound('click');
+
+
     const lockedModal=
         document.getElementById("lockedModal");
 
+
     if(lockedModal)
         lockedModal.classList.add("hidden");
+
 }
 
+
 function closeCertificate(){
+
     playSound('click');
+
+
     const certModal=
         document.getElementById("certModal");
 
+
     if(certModal)
         certModal.classList.add("hidden");
+
 }
+
+
+/* =========================================================
+   GLOBAL EXPORTS & INITIALIZATION
+   ========================================================= */
 
 window.updateScore=updateScore;
 window.saveStudentProfile=saveStudentProfile;
@@ -1922,61 +2618,108 @@ window.openCertificate=openCertificate;
 window.closeLockedModal=closeLockedModal;
 window.closeCertificate=closeCertificate;
 window.showPage=showPage;
+window.openResetModal=openResetModal;
+window.closeResetModal=closeResetModal;
+window.executeResetAll=executeResetAll;
+
 
 window.addEventListener('DOMContentLoaded',()=>{
 
+
+    /* Navigation */
+
     document.querySelectorAll(".nav button").forEach(button=>{
+
         button.addEventListener(
             "click",
             ()=>showPage(button.dataset.page)
         );
+
     });
 
+
+    /* Home buttons */
+
     document.querySelectorAll("[data-go]").forEach(button=>{
+
         button.addEventListener(
             "click",
             ()=>showPage(button.dataset.go)
         );
+
     });
+
+
+    /* Game next */
 
     const gameNextBtn=
         document.getElementById("gameNext");
 
+
     if(gameNextBtn){
+
         gameNextBtn.addEventListener("click",()=>{
+
             playSound('click');
+
             gameIndex++;
+
             renderGame();
+
         });
+
     }
+
+
+    /* Quiz next */
 
     const quizNextBtn=
         document.getElementById("quizNext");
 
+
     if(quizNextBtn){
+
         quizNextBtn.addEventListener("click",()=>{
+
             playSound('click');
+
             quizIndex++;
+
             renderQuiz();
+
         });
+
     }
+
+
+    /* Restore student details */
 
     const nameInput=
         document.getElementById("studentNameInput");
 
+
     const classInput=
         document.getElementById("studentClassInput");
+
 
     if(nameInput && studentName)
         nameInput.value=studentName;
 
+
     if(classInput && studentClass)
         classInput.value=studentClass;
 
+
+    /* Initialize */
+
     updateScore();
+
     renderGame();
+
     renderQuiz();
+
 });
 </script>
+
 </body>
 </html>
