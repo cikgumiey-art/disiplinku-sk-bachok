@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DisiplinKu — SK Bachok</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Inter,Arial,sans-serif;
+    background:#f5f7fb;
+    color:#111827;
+}
+
+.app{
+    max-width:900px;
+    margin:auto;
+    padding:24px 16px 40px;
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:65px;
+    height:65px;
+    object-fit:contain;
+    border-radius:15px;
+}
+
+.brand h1{
+    margin:0;
+    font-size:23px;
+    font-weight:800;
+}
+
+.brand p{
+    margin:2px 0 0;
+    color:#6b7280;
+    font-size:12px;
+    letter-spacing:.5px;
+}
+
+.score{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:11px 15px;
+    font-weight:bold;
+    white-space:nowrap;
+    box-shadow:0 2px 4px rgba(0,0,0,.02);
+}
+
+.hero{
+    background:linear-gradient(135deg,#eaf3ff,#ffffff);
+    border:1px solid #dbe5f0;
+    border-radius:24px;
+    padding:28px;
+    margin-bottom:16px;
+}
+
+.hero small{
+    color:#2563eb;
+    font-weight:bold;
+    letter-spacing:.5px;
+}
+
+.hero h2{
+    font-size:36px;
+    line-height:1.1;
+    margin:10px 0;
+    font-weight:800;
+}
+
+.hero p{
+    color:#667085;
+    max-width:650px;
+    line-height:1.6;
+    margin:0;
+}
+
+.progress{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .4s ease;
+}
+
+.nav{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:9px;
+    margin-bottom:16px;
+}
+
+.nav button{
+    border:1px solid #e5e7eb;
+    background:white;
+    border-radius:15px;
+    padding:12px 6px;
+    min-height:65px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    transition:all .2s ease;
+}
+
+.nav button span{
+    display:block;
+    font-size:20px;
+    margin-bottom:3px;
+}
+
+.nav button:hover{
+    border-color:#2563eb;
+    transform:translateY(-1px);
+}
+
+.nav button.active{
+    background:#2563eb;
+    color:white;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.25);
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 2px 8px rgba(0,0,0,.02);
+}
+
+.panel h3{
+    margin:0;
+    font-size:21px;
+    font-weight:700;
+}
+
+.subtitle{
+    color:#667085;
+    font-size:14px;
+    margin:5px 0 18px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.card{
+    border:1px solid #e5e7eb;
+    background:#fafafa;
+    border-radius:16px;
+    padding:16px;
+}
+
+.card b{
+    display:block;
+    margin-bottom:6px;
+    font-size:15px;
+}
+
+.card p{
+    margin:0;
+    color:#667085;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.action{
+    width:100%;
+    text-align:left;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:16px;
+    padding:17px;
+    cursor:pointer;
+    transition:all .2s ease;
+}
+
+.action:hover{
+    border-color:#2563eb;
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.action b{
+    display:block;
+    margin-bottom:5px;
+    font-size:15px;
+}
+
+.action p{
+    margin:0;
+    color:#667085;
+    font-size:13px;
+}
+
+.stats{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+}
+
+.stat{
+    flex:1;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:13px;
+    background:#fafafa;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    color:#2563eb;
+}
+
+.stat small{
+    color:#667085;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:.5px;
+}
+
+.game-box{
+    background:#fafafa;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:20px;
+}
+
+.tag{
+    display:inline-block;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.question{
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.45;
+}
+
+.choices{
+    display:grid;
+    gap:10px;
+    margin-top:15px;
+}
+
+.choice{
+    border:1px solid #e5e7eb;
+    background:white;
+    border-radius:13px;
+    padding:14px;
+    text-align:left;
+    cursor:pointer;
+    font-weight:600;
+    font-size:14px;
+    transition:all .2s ease;
+}
+
+.choice:hover:not(:disabled){
+    border-color:#2563eb;
+    background:#f8fafc;
+}
+
+.choice:disabled{
+    cursor:default;
+    opacity:.75;
+}
+
+.choice.correct-choice{
+    background:#dcfce7 !important;
+    border-color:#22c55e !important;
+    color:#15803d;
+}
+
+.choice.wrong-choice{
+    background:#fee2e2 !important;
+    border-color:#ef4444 !important;
+    color:#b91c1c;
+}
+
+.feedback{
+    background:#eff6ff;
+    border-radius:13px;
+    padding:14px;
+    margin-top:14px;
+    font-size:14px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.next{
+    margin-top:14px;
+    background:#2563eb;
+    color:white;
+    border:0;
+    border-radius:12px;
+    padding:12px 20px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:all .2s ease;
+}
+
+.next:hover{
+    opacity:.9;
+    transform:translateY(-1px);
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================================================
+   CETAKAN SIJIL A4 PORTRAIT
+   ========================================================= */
+
+@page{
+    size:A4 portrait;
+    margin:0;
+}
+
+@media print{
+
+    /* Saiz halaman fizikal */
+    html{
+        width:210mm !important;
+        height:297mm !important;
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    body{
+        width:210mm !important;
+        height:297mm !important;
+        min-width:210mm !important;
+        min-height:297mm !important;
+
+        margin:0 !important;
+        padding:0 !important;
+
+        background:#ffffff !important;
+        overflow:hidden !important;
+
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    /* Sembunyikan seluruh aplikasi */
+    body > .app,
+    #lockedModal{
+        display:none !important;
+    }
+
+    /* Paparkan modal sijil sebagai halaman A4 */
+    #certModal{
+        display:block !important;
+
+        position:static !important;
+
+        width:210mm !important;
+        height:297mm !important;
+        min-width:210mm !important;
+        min-height:297mm !important;
+        max-width:210mm !important;
+        max-height:297mm !important;
+
+        margin:0 !important;
+        padding:0 !important;
+
+        background:#ffffff !important;
+
+        overflow:hidden !important;
+
+        visibility:visible !important;
+
+        backdrop-filter:none !important;
+    }
+
+    /*
+       SIJIL UTAMA
+       Tepat 210mm × 297mm
+    */
+    #printable-certificate{
+
+        display:flex !important;
+
+        position:relative !important;
+
+        width:210mm !important;
+        height:297mm !important;
+
+        min-width:210mm !important;
+        min-height:297mm !important;
+
+        max-width:210mm !important;
+        max-height:297mm !important;
+
+        margin:0 !important;
+        padding:10mm !important;
+
+        box-sizing:border-box !important;
+
+        background:#ffffff !important;
+
+        border:8px double #f59e0b !important;
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+        overflow:hidden !important;
+
+        flex-direction:column !important;
+        justify-content:space-between !important;
+
+        transform:none !important;
+
+        page-break-before:avoid !important;
+        page-break-after:avoid !important;
+        page-break-inside:avoid !important;
+
+        break-before:avoid !important;
+        break-after:avoid !important;
+        break-inside:avoid !important;
+
+        visibility:visible !important;
+    }
+
+    /*
+       BINGKAI DALAMAN SIJIL
+    */
+    #printable-certificate > div:not(.no-print){
+
+        display:flex !important;
+
+        flex:1 1 auto !important;
+
+        width:100% !important;
+
+        height:auto !important;
+        min-height:0 !important;
+        max-height:100% !important;
+
+        margin:0 !important;
+
+        padding:8mm !important;
+
+        box-sizing:border-box !important;
+
+        background:#fffdfa !important;
+
+        border-radius:0 !important;
+
+        overflow:hidden !important;
+
+        flex-direction:column !important;
+        justify-content:space-between !important;
+
+        page-break-before:avoid !important;
+        page-break-after:avoid !important;
+        page-break-inside:avoid !important;
+
+        break-before:avoid !important;
+        break-after:avoid !important;
+        break-inside:avoid !important;
+
+        visibility:visible !important;
+    }
+
+    /* Logo sijil */
+    #printable-certificate img{
+        width:75px !important;
+        height:75px !important;
+        object-fit:contain !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+
+    /*
+       Kandungan sijil
+    */
+    #printable-certificate h1,
+    #printable-certificate h2,
+    #printable-certificate h3,
+    #printable-certificate h4,
+    #printable-certificate p,
+    #printable-certificate span,
+    #printable-certificate img,
+    #printable-certificate div{
+        break-inside:avoid !important;
+        page-break-inside:avoid !important;
+    }
+
+    /* Butang tidak dicetak */
+    .no-print,
+    #printable-certificate .no-print{
+        display:none !important;
+        visibility:hidden !important;
+    }
+
+    #certModal *,
+    #printable-certificate *{
+        visibility:visible !important;
+    }
+
+    #printable-certificate .no-print,
+    #printable-certificate .no-print *{
+        visibility:hidden !important;
+        display:none !important;
+    }
+}
+
+@media(max-width:600px){
+
+    .app{
+        padding:15px 12px 30px;
+    }
+
+    .header{
+        align-items:flex-start;
+    }
+
+    .logo{
+        width:52px;
+        height:52px;
+    }
+
+    .brand h1{
+        font-size:18px;
+    }
+
+    .brand p{
+        font-size:10px;
+    }
+
+    .score{
+        font-size:12px;
+        padding:8px 12px;
+    }
+
+    .hero{
+        padding:20px;
+    }
+
+    .hero h2{
+        font-size:28px;
+    }
+
+    .nav{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        flex-wrap:wrap;
+    }
+
+    .stat{
+        min-width:45%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+    <div class="brand">
+        <img
+            class="logo"
+            src="https://i.postimg.cc/0zKRV0nR/Chat-GPT-Image-May-5-2025-at-07-50-12-PM-2.png"
+            alt="Logo SK Bachok"
+            onerror="this.src='https://placehold.co/120x120/2563eb/ffffff?text=SKB'"
+        >
+        <div>
+            <h1>DisiplinKu</h1>
+            <p>SEKOLAH KEBANGSAAN BACHOK</p>
+        </div>
+    </div>
+
+    <div class="score">
+        ⭐ <span id="score">0</span> mata
+    </div>
+</header>
+
+<section class="hero">
+    <small>SK BACHOK • PEMBELAJARAN DISIPLIN INTERAKTIF</small>
+    <h2>
+        Disiplin membentuk<br>
+        masa depan.
+    </h2>
+    <p>
+        Kenali peraturan sekolah, fahami barang larangan
+        dan uji kemahiran membuat keputusan melalui
+        aktiviti interaktif.
+    </p>
+
+    <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+</section>
+
+<nav class="nav">
+    <button class="active" data-page="utama">
+        <span>🏠</span>
+        Utama
+    </button>
+    <button data-page="peraturan">
+        <span>📘</span>
+        Peraturan
+    </button>
+    <button data-page="larangan">
+        <span>🚫</span>
+        Larangan
+    </button>
+    <button data-page="buli">
+        <span>🛑</span>
+        Info Buli
+    </button>
+    <button data-page="game">
+        <span>🎮</span>
+        Game
+    </button>
+    <button data-page="pencapaian">
+        <span>🏆</span>
+        Sijil
+    </button>
+</nav>
+
+<section id="utama" class="panel page">
+    <h3>🎯 Misi Pembelajaran</h3>
+    <p class="subtitle">
+        Pilih aktiviti dan kumpul mata disiplin anda.
+    </p>
+
+    <div class="grid">
+        <button class="action" data-go="peraturan">
+            <b>📖 Kenali Peraturan</b>
+            <p>Pelajari amalan murid yang bertanggungjawab.</p>
+        </button>
+
+        <button class="action" data-go="larangan">
+            <b>🚫 Kenali Barang Larangan</b>
+            <p>Kenal pasti barang yang tidak sesuai dibawa.</p>
+        </button>
+
+        <button class="action" data-go="buli">
+            <b>🛑 Hentikan Buli</b>
+            <p>Fahami jenis buli dan cara mencegahnya.</p>
+        </button>
+
+        <button class="action" data-go="game">
+            <b>🎮 Cabaran Disiplin</b>
+            <p>Buat keputusan dalam situasi harian sekolah.</p>
+        </button>
+
+        <button class="action" data-go="kuiz">
+            <b>🧠 Kuiz Pantas</b>
+            <p>Uji kefahaman dan kumpul mata ganjaran.</p>
+        </button>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <strong id="level">1</strong>
+            <small>TAHAP</small>
+        </div>
+        <div class="stat">
+            <strong id="correct">0</strong>
+            <small>JAWAPAN BETUL</small>
+        </div>
+        <div class="stat">
+            <strong id="badgeCount">1</strong>
+            <small>LENCANA</small>
+        </div>
+    </div>
+</section>
+
+<section id="peraturan" class="panel page hidden">
+    <h3>📘 Peraturan Sekolah</h3>
+    <p class="subtitle">
+        Amalan asas untuk sekolah yang selamat, teratur dan harmoni.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <b>⏰ Tepat Masa</b>
+            <p>
+                Hadir ke sekolah sebelum pukul 7.30 pagi dan masuk ke kelas mengikut masa yang ditetapkan.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>👔 Berpakaian Kemas</b>
+            <p>
+                Pakai pakaian seragam lengkap dan kemas mengikut ketetapan dan jadual waktu sekolah. Hari Ahad wajib memakai pakaian seragam sekolah lengkap.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🤝 Hormat-Menghormati</b>
+            <p>
+                Hormati guru, kakitangan sekolah, dan rakan-rakan pada setiap masa.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🧹 Jaga Kebersihan</b>
+            <p>
+                Pastikan kelas dan kawasan sekolah sentiasa bersih, kemas, dan bebas sampah.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🗣️ Bahasa Sopan</b>
+            <p>
+                Gunakan tutur kata yang baik, sopan, dan elakkan ejekan atau perkataan kesat.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🏫 Jaga Harta Sekolah</b>
+            <p>
+                Gunakan kemudahan sekolah dengan cermat dan tidak merosakkan perabot atau peralatan sekolah.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="larangan" class="panel page hidden">
+    <h3>🚫 Barang Dilarang Dibawa</h3>
+    <p class="subtitle">
+        Barang-barang yang tidak dibenarkan dibawa ke sekolah demi keselamatan dan ketenteraman warga SK Bachok.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <b>🔪 Objek Tajam & Berbahaya</b>
+            <p>
+                Pisau, gunting tajam, atau sebarang alatan tajam yang boleh menyebabkan kecederaan dan tidak diperlukan untuk pembelajaran.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🔥 Bahan Berbahaya & Pemetik Api</b>
+            <p>
+                Pemetik api, mercun, bunga api, atau bahan berunsur kimia yang boleh mencetuskan kebakaran atau kecederaan.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>📱 Peranti / Gajet Elektronik</b>
+            <p>
+                Telefon bimbit, peranti permainan elektronik, atau gajet yang tidak dibenarkan mengikut ketetapan sekolah.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>💄 Alat Kosmetik & Dandanan</b>
+            <p>
+                Alat solek/kosmetik, minyak wangi, dan minyak rambut yang bercanggah dengan etika sahsiah dan kekemasan murid.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>🃏 Alat & Bahan Permainan Dilarang</b>
+            <p>
+                Kad permainan, penunjuk laser (laser pointer), mainan berunsur perjudian, atau alatan yang mengganggu sesi PdP.
+            </p>
+        </div>
+
+        <div class="card">
+            <b>💊 Bahan Terlarang & Rokok/Vape</b>
+            <p>
+                Sebarang jenis rokok, vape, atau bahan terlarang yang menyalahi undang-undang dan peraturan disiplin sekolah.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="buli" class="panel page hidden">
+    <h3>🛑 Hentikan Buli di Sekolah</h3>
+    <p class="subtitle">
+        Fahami maksud buli, kenali 4 jenis buli, dan bersama kita cipta persekitaran sekolah yang selamat dan harmoni.
+    </p>
+
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:18px;margin-bottom:18px;">
+        <b style="color:#dc2626;font-size:16px;display:block;margin-bottom:6px;">
+            ❓ Apa itu Buli?
+        </b>
+        <p style="margin:0;font-size:13px;color:#4b5563;line-height:1.6;">
+            Buli ialah perbuatan kasar, menyakitkan atau menindas yang dilakukan secara sengaja dan berulang kali oleh individu atau kumpulan terhadap rakan lain yang lebih lemah. Buli adalah amalan salah dan <strong>DILARANG SAMA SEKALI</strong> di Sekolah Kebangsaan Bachok!
+        </p>
+    </div>
+
+    <h4 style="font-size:16px;font-weight:bold;margin:0 0 12px;color:#1f2937;">
+        📌 4 Jenis Buli & Penerangan:
+    </h4>
+
+    <div class="grid" style="margin-bottom:18px;">
+        <div class="card" style="border-left:5px solid #ef4444;background:#fff;">
+            <b style="color:#dc2626;font-size:15px;">
+                👊 1. Buli Fizikal
+            </b>
+            <p style="margin-top:4px;">
+                <strong>Penerangan:</strong>
+                Perbuatan mencederakan tubuh badan rakan atau merosakkan harta benda mereka secara sengaja.
+            </p>
+            <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
+                💡 <i>Contoh: Memukul, menendang, menolak, merampas wang, merosakkan alat tulis atau beg rakan.</i>
+            </p>
+        </div>
+
+        <div class="card" style="border-left:5px solid #f59e0b;background:#fff;">
+            <b style="color:#d97706;font-size:15px;">
+                🗣️ 2. Buli Lisan (Verbal)
+            </b>
+            <p style="margin-top:4px;">
+                <strong>Penerangan:</strong>
+                Menggunakan perkataan atau tutur kata yang kasar dan menyakitkan hati untuk menghina atau merendah-rendahkan orang lain.
+            </p>
+            <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
+                💡 <i>Contoh: Mengejek nama ibu bapa, memanggil dengan gelaran buruk, memaki, menghina fizikal, atau mengancam.</i>
+            </p>
+        </div>
+
+        <div class="card" style="border-left:5px solid #3b82f6;background:#fff;">
+            <b style="color:#2563eb;font-size:15px;">
+                👥 3. Buli Sosial (Relasional)
+            </b>
+            <p style="margin-top:4px;">
+                <strong>Penerangan:</strong>
+                Tindakan merosakkan hubungan persahabatan, reputasi, atau kedudukan seseorang rakan dalam kumpulan.
+            </p>
+            <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
+                💡 <i>Contoh: Memulaukan rakan, menyebarkan fitnah/khabar angin palsu, dan mengajak orang lain membenci atau mengabaikan rakan tersebut.</i>
+            </p>
+        </div>
+
+        <div class="card" style="border-left:5px solid #8b5cf6;background:#fff;">
+            <b style="color:#7c3aed;font-size:15px;">
+                💻 4. Buli Siber
+            </b>
+            <p style="margin-top:4px;">
+                <strong>Penerangan:</strong>
+                Perbuatan membuli dan mengganggu yang dilakukan menggunakan peranti elektronik, aplikasi media sosial, atau perkhidmatan mesej.
+            </p>
+            <p style="margin-top:6px;font-size:12px;color:#6b7280;background:#f9fafb;padding:8px;border-radius:8px;">
+                💡 <i>Contoh: Menghantar mesej jelik/ugutan, menyebarkan gambar aib tanpa izin, atau mengejek rakan di alam maya.</i>
+            </p>
+        </div>
+    </div>
+
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:18px;">
+        <b style="color:#2563eb;font-size:15px;display:block;margin-bottom:8px;">
+            🛡️ Langkah Tindakan Jika Kamu Dibuli atau Melihat Buli:
+        </b>
+        <ul style="margin:0;padding-left:20px;font-size:13px;color:#374151;line-height:1.7;">
+            <li>
+                <strong>Katakan TIDAK dengan tegas:</strong>
+                Beritahu pembuli untuk berhenti dengan berani dan yakin.
+            </li>
+            <li>
+                <strong>Jangan berdiam diri:</strong>
+                Laporkan SEGERA kepada Guru Disiplin, Guru Bimbingan & Kaunseling, atau Guru Kelas.
+            </li>
+            <li>
+                <strong>Bantu rakan yang dibuli:</strong>
+                Berikan sokongan moral dan elakkan daripada menjadi penonton sahaja.
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section id="game" class="panel page hidden">
+    <h3>🎮 Cabaran Disiplin</h3>
+    <p class="subtitle">
+        Pilih tindakan paling tepat dalam setiap situasi harian.
+    </p>
+
+    <div class="game-box">
+        <div id="gameContent">
+            <span class="tag">
+                SITUASI <span id="gameNumber">1 / 7</span>
+            </span>
+            <div id="gameQuestion" class="question"></div>
+            <div id="gameChoices" class="choices"></div>
+            <div id="gameFeedback" class="feedback hidden"></div>
+            <button id="gameNext" class="next hidden" type="button">
+                Cabaran Seterusnya →
+            </button>
+        </div>
+
+        <div id="gameComplete"
+             class="hidden"
+             style="text-align:center;padding:20px 10px;">
+            <div style="font-size:56px;margin-bottom:8px;">🎉</div>
+            <h3 style="font-size:26px;font-weight:900;color:#16a34a;margin-bottom:8px;">
+                TAHNIAH !
+            </h3>
+            <p style="font-size:15px;color:#4b5563;margin-bottom:22px;line-height:1.5;">
+                Anda telah berjaya menyempurnakan <strong>semua soalan Cabaran Disiplin</strong>!
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button
+                    onclick="showPage('kuiz')"
+                    class="next"
+                    style="margin:0;background:#2563eb;padding:12px 20px;font-size:14px;">
+                    🧠 Cuba Kuiz Pantas
+                </button>
+
+                <button
+                    onclick="showPage('pencapaian')"
+                    class="next"
+                    style="margin:0;background:#f59e0b;padding:12px 20px;font-size:14px;">
+                    🏆 Semak & Cetak Sijil
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="kuiz" class="panel page hidden">
+    <h3>🧠 Kuiz Pantas</h3>
+    <p class="subtitle">
+        Uji kefahaman anda mengenai peraturan dan sahsiah terpuji.
+    </p>
+
+    <div class="game-box">
+        <div id="quizContent">
+            <span class="tag">
+                SOALAN <span id="quizNumber">1 / 7</span>
+            </span>
+            <div id="quizQuestion" class="question"></div>
+            <div id="quizChoices" class="choices"></div>
+            <div id="quizFeedback" class="feedback hidden"></div>
+            <button id="quizNext" class="next hidden" type="button">
+                Soalan Seterusnya →
+            </button>
+        </div>
+
+        <div id="quizComplete"
+             class="hidden"
+             style="text-align:center;padding:20px 10px;">
+            <div style="font-size:56px;margin-bottom:8px;">🎉</div>
+            <h3 style="font-size:26px;font-weight:900;color:#16a34a;margin-bottom:8px;">
+                TAHNIAH !
+            </h3>
+            <p style="font-size:15px;color:#4b5563;margin-bottom:22px;line-height:1.5;">
+                Anda telah berjaya menyempurnakan <strong>semua soalan Kuiz Pantas</strong>!
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button
+                    onclick="showPage('game')"
+                    class="next"
+                    style="margin:0;background:#2563eb;padding:12px 20px;font-size:14px;">
+                    🎮 Main Cabaran Disiplin
+                </button>
+
+                <button
+                    onclick="showPage('pencapaian')"
+                    class="next"
+                    style="margin:0;background:#f59e0b;padding:12px 20px;font-size:14px;">
+                    🏆 Semak & Cetak Sijil
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pencapaian" class="panel page hidden">
+    <h3>🏆 Sijil & Pencapaian</h3>
+    <p class="subtitle">
+        Lengkapkan cabaran untuk menjana Sijil Penghargaan Amalan Baik.
+    </p>
+
+    <div
+        id="certRequirementBox"
+        class="card"
+        style="margin-bottom:16px;background:#fffbeb;border-color:#fcd34d;transition:all .3s ease;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:28px;" id="certStatusIcon">🔒</span>
+            <div>
+                <b id="certStatusTitle" style="color:#b45309;font-size:15px;">
+                    Status Sijil: Terkunci
+                </b>
+                <p id="certStatusDesc" style="margin-top:2px;">
+                    Kamu perlu menjawab sekurang-kurangnya <b>4 soalan dengan betul</b> dalam Cabaran / Kuiz untuk membuka sijil.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top:12px;background:#e5e7eb;border-radius:10px;height:10px;overflow:hidden;">
+            <div
+                id="certProgressBar"
+                style="width:0%;height:100%;background:#f59e0b;transition:.4s ease;">
+            </div>
+        </div>
+
+        <small
+            id="certProgressText"
+            style="display:block;margin-top:6px;text-align:right;font-weight:bold;color:#b45309;">
+            0 / 4 Jawapan Betul (0%)
+        </small>
+    </div>
+
+    <div class="game-box" style="margin-bottom:20px;">
+        <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
+                NAMA PENUH MURID:
+            </label>
+            <input
+                type="text"
+                id="studentNameInput"
+                oninput="saveStudentProfile()"
+                placeholder="Cth: MUHAMMAD AMMAR BIN ZULKIFLI"
+                style="width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;outline:none;">
+        </div>
+
+        <div>
+            <label style="display:block;font-size:12px;font-weight:bold;color:#374151;margin-bottom:4px;">
+                KELAS / TAHUN:
+            </label>
+            <input
+                type="text"
+                id="studentClassInput"
+                oninput="saveStudentProfile()"
+                placeholder="Cth: 5 BESTARI"
+                style="width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;outline:none;">
+        </div>
+
+        <button
+            id="certBtn"
+            onclick="openCertificate()"
+            class="next"
+            style="width:100%;margin-top:16px;background:#f59e0b;color:#fff;font-size:15px;padding:13px;transition:background .3s ease;">
+            🔒 Sijil Terkunci (Selesaikan Cabaran)
+        </button>
+    </div>
+</section>
+
+</div>
+
+<div
+    id="lockedModal"
+    class="hidden"
+    style="position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;">
+    <div
+        class="bg-white text-slate-900 p-6 rounded-3xl max-w-md w-full border-4 border-amber-400 shadow-2xl text-center"
+        style="background:#fff;">
+        <div style="font-size:52px;margin-bottom:8px;">🔒</div>
+        <h3 style="font-size:20px;font-weight:bold;color:#1f2937;margin-bottom:8px;">
+            Sijil Masih Terkunci!
+        </h3>
+        <p style="font-size:13px;color:#4b5563;line-height:1.5;margin-bottom:16px;">
+            Anda perlu menjawab sekurang-kurangnya <strong>4 soalan dengan betul</strong> dalam <strong>Cabaran Disiplin</strong> atau <strong>Kuiz Pantas</strong> untuk melayakkan diri mendapat Sijil Penghargaan.
+        </p>
+
+        <div
+            id="lockedModalProgress"
+            style="background:#fef3c7;border:1px solid #fde68a;padding:12px;border-radius:12px;font-weight:bold;color:#b45309;margin-bottom:20px;font-size:14px;">
+            Pencapaian Semasa: 0 / 4 Jawapan Betul
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button
+                onclick="closeLockedModal();showPage('game');"
+                class="next"
+                style="margin:0;background:#2563eb;padding:10px 18px;font-size:13px;">
+                🎮 Main Game Sekarang
+            </button>
+            <button
+                onclick="closeLockedModal()"
+                class="next"
+                style="margin:0;background:#e5e7eb;color:#374151;padding:10px 16px;font-size:13px;">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
+<div
+    id="certModal"
+    class="hidden"
+    style="position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
+    <div
+        id="printable-certificate"
+        class="bg-white text-slate-900 relative"
+        style="background:#fff;">
+
+        <button
+            onclick="closeCertificate()"
+            class="no-print absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full font-bold flex items-center justify-center">
+            ✕
+        </button>
+
+        <div
+            style="background:#fffdfa;height:100%;"
+            class="text-center border-4 border-dashed border-amber-300 p-6 sm:p-8 rounded-2xl relative flex flex-col justify-between">
+
+            <div>
+                <img
+                    src="https://i.postimg.cc/0zKRV0nR/Chat-GPT-Image-May-5-2025-at-07-50-12-PM-2.png"
+                    alt="Logo SKB"
+                    style="width:75px;height:75px;margin:0 auto 12px;object-fit:contain;"
+                    onerror="this.src='https://placehold.co/120x120/2563eb/ffffff?text=SKB'"
+                >
+
+                <h2 style="font-size:13px;letter-spacing:2px;color:#6b7280;font-weight:bold;margin:0;">
+                    SEKOLAH KEBANGSAAN BACHOK
+                </h2>
+
+                <h3 style="font-size:22px;font-weight:900;color:#1f2937;margin:10px 0 6px;text-transform:uppercase;">
+                    SIJIL PENGHARGAAN AMALAN BAIK
+                </h3>
+
+                <p style="font-size:12px;color:#4b5563;margin:0;font-weight:600;">
+                    Modul Pembelajaran Disiplin & Sahsiah Murid
+                </p>
+
+                <p style="font-size:12px;color:#6b7280;margin:24px 0 6px;">
+                    Dengan ini disahkan bahawa
+                </p>
+
+                <div style="margin:14px 0 22px;">
+                    <span
+                        id="certStudentName"
+                        style="font-size:24px;font-weight:900;color:#2563eb;text-decoration:underline;text-decoration-color:#f59e0b;display:block;text-transform:uppercase;">
+                        NAMA MURID
+                    </span>
+
+                    <span
+                        id="certStudentClass"
+                        style="font-size:14px;font-weight:bold;color:#4b5563;margin-top:6px;display:block;">
+                        KELAS
+                    </span>
+                </div>
+
+                <p style="font-size:13px;color:#374151;line-height:1.7;max-width:440px;margin:0 auto;">
+                    Telah berjaya menyempurnakan Modul Pembelajaran Interaktif <strong>DisiplinKu</strong> dengan cemerlang dan mengamalkan sahsiah terpuji di Sekolah Kebangsaan Bachok.
+                </p>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;text-align:center;">
+                <div style="text-align:left;">
+                    <p style="font-size:11px;font-weight:bold;color:#1f2937;margin:0;">
+                        UNIT DISIPLIN & HEM
+                    </p>
+                    <p style="font-size:10px;color:#6b7280;margin:2px 0 0;">
+                        SK Bachok, Kelantan
+                    </p>
+                </div>
+
+                <div>
+                    <i class="fas fa-certificate" style="font-size:40px;color:#f59e0b;"></i>
+                </div>
+
+                <div style="text-align:right;">
+                    <p style="font-size:12px;font-weight:bold;color:#1f2937;margin:0;text-transform:uppercase;">
+                        PUAN SITI WAHIDA BT TAIB
+                    </p>
+                    <p style="font-size:11px;font-weight:bold;color:#2563eb;margin:1px 0 0;">
+                        Guru Besar
+                    </p>
+                    <p style="font-size:10px;color:#6b7280;margin:1px 0 0;">
+                        SK Bachok
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-print" style="margin-top:20px;display:flex;gap:10px;justify-content:center;">
+            <button
+                onclick="window.print()"
+                class="next"
+                style="margin:0;background:#2563eb;padding:10px 22px;font-size:14px;">
+                🖨️ Cetak / Simpan PDF
+            </button>
+            <button
+                onclick="closeCertificate()"
+                class="next"
+                style="margin:0;background:#e5e7eb;color:#374151;padding:10px 20px;font-size:14px;">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function getStorage(key,fallback=''){
+    try{
+        const val=localStorage.getItem(key);
+        return val!==null ? val : fallback;
+    }catch(e){
+        return fallback;
+    }
+}
+
+function setStorage(key,value){
+    try{
+        localStorage.setItem(key,value);
+    }catch(e){}
+}
+
+let score=parseInt(getStorage('disiplinku_score','0'))||0;
+let correct=parseInt(getStorage('disiplinku_correct','0'))||0;
+let studentName=getStorage('disiplinku_student_name','');
+let studentClass=getStorage('disiplinku_student_class','');
+
+let gameIndex=0;
+let quizIndex=0;
+const REQUIRED_CORRECT=4;
+let audioCtx=null;
+
+function playSound(type){
+    try{
+        const AudioCtx=window.AudioContext||window.webkitAudioContext;
+        if(!AudioCtx)return;
+        if(!audioCtx)audioCtx=new AudioCtx();
+        if(audioCtx.state==='suspended')audioCtx.resume();
+
+        const osc=audioCtx.createOscillator();
+        const gain=audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now=audioCtx.currentTime;
+
+        if(type==='correct'){
+            osc.type='triangle';
+            osc.frequency.setValueAtTime(523.25,now);
+            osc.frequency.exponentialRampToValueAtTime(659.25,now+.1);
+            osc.frequency.exponentialRampToValueAtTime(783.99,now+.2);
+            gain.gain.setValueAtTime(.3,now);
+            gain.gain.exponentialRampToValueAtTime(.01,now+.35);
+            osc.start(now);
+            osc.stop(now+.35);
+        }
+        else if(type==='wrong'){
+            osc.type='sawtooth';
+            osc.frequency.setValueAtTime(220,now);
+            osc.frequency.exponentialRampToValueAtTime(164.81,now+.2);
+            gain.gain.setValueAtTime(.3,now);
+            gain.gain.exponentialRampToValueAtTime(.01,now+.3);
+            osc.start(now);
+            osc.stop(now+.3);
+        }
+        else if(type==='click'){
+            osc.type='sine';
+            osc.frequency.setValueAtTime(400,now);
+            gain.gain.setValueAtTime(.1,now);
+            gain.gain.exponentialRampToValueAtTime(.01,now+.05);
+            osc.start(now);
+            osc.stop(now+.05);
+        }
+    }catch(e){}
+}
+
+const games=[
+{
+question:"Kamu ternampak sampah di bawah meja selepas rehat. Apakah tindakan terbaik?",
+choices:[
+"Biarkan sahaja.",
+"Buang ke tong sampah dan ajak rakan menjaga kebersihan.",
+"Tendang sampah ke tempat lain."
+],
+answer:1,
+explanation:"Murid berdisiplin sentiasa menjaga kebersihan kelas dan persekitaran sekolah."
+},
+
+{
+question:"Seorang rakan membawa barang yang dilarang ke sekolah. Apakah tindakan paling bertanggungjawab?",
+choices:[
+"Ikut membawanya.",
+"Sembunyikan barang itu.",
+"Maklumkan kepada guru dengan cara yang betul."
+],
+answer:2,
+explanation:"Melaporkan kepada guru membantu menjaga keselamatan seluruh warga sekolah."
+},
+
+{
+question:"Kamu nampak seorang murid diejek oleh rakan lain. Apa yang patut kamu lakukan?",
+choices:[
+"Sertai ejekan.",
+"Bantu rakan dan maklumkan kepada guru jika perlu.",
+"Rakam dan sebarkan."
+],
+answer:1,
+explanation:"Hormati rakan dan hentikan buli atau ejekan di sekolah."
+},
+
+{
+question:"Kamu datang lewat ke sekolah. Apakah sikap yang betul?",
+choices:[
+"Masuk tanpa penjelasan.",
+"Beri alasan palsu.",
+"Beritahu guru dan terima teguran dengan jujur dan sopan."
+],
+answer:2,
+explanation:"Jujur dan mengakui kesilapan adalah ciri amalan baik murid berdisiplin."
+},
+
+{
+question:"Semasa perhimpunan rasmi sekolah, rakan di sebelah kamu mengajak berbual. Apakah tindakan kamu?",
+choices:[
+"Melayan perbualan rakan.",
+"Berdiri tegak, senyap dan mendengar perhimpunan dengan penuh hormat.",
+"Berlari keluar dari barisan perhimpunan."
+],
+answer:1,
+explanation:"Menjaga ketenteraman dan menghormati perhimpunan rasmi mencerminkan disiplin diri yang tinggi."
+},
+
+{
+question:"Kamu melihat pili air di tandas sekolah dibiarkan terbuka dan melimpah. Apakah tindakan murni kamu?",
+choices:[
+"Biarkan sahaja kerana bukan kamu yang membukanya.",
+"Tutup pili air serta-merta dan maklumkan guru jika berlaku kerosakan.",
+"Bermain air di kawasan tandas."
+],
+answer:1,
+explanation:"Sikap prihatin terhadap kemudahan sekolah dapat mengelakkan pembaziran dan kerosakan harta benda."
+},
+
+{
+question:"Apabila loceng penamat waktu rehat berbunyi, apakah yang patut kamu lakukan?",
+choices:[
+"Sambung bermain di padang.",
+"Masuk ke kelas dengan segera dan bersedia untuk sesi PdP.",
+"Pergi ke kantin untuk membeli makanan lagi."
+],
+answer:1,
+explanation:"Menepati masa dan bersedia sebelum guru masuk ke kelas memastikan pembelajaran berjalan lancar."
+}
+];
+
+const quizzes=[
+{
+question:"Apakah tujuan utama peraturan sekolah diwujudkan?",
+choices:[
+"Untuk menyusahkan murid.",
+"Untuk mewujudkan persekitaran yang selamat dan teratur.",
+"Untuk mengurangkan masa belajar."
+],
+answer:1,
+explanation:"Peraturan memastikan semua murid belajar dalam keadaan selamat, adil, dan tenang."
+},
+
+{
+question:"Apakah contoh sikap menghormati guru di dalam kelas?",
+choices:[
+"Bercakap semasa guru sedang mengajar.",
+"Mendengar arahan dan bercakap dengan sopan.",
+"Mengabaikan arahan guru."
+],
+answer:1,
+explanation:"Mendengar dengan tekun adalah tanda hormat murid kepada guru."
+},
+
+{
+question:"Jika kamu tidak pasti sesuatu barang dibenarkan atau tidak, apakah tindakan terbaik?",
+choices:[
+"Bawa sahaja.",
+"Tanya guru terlebih dahulu.",
+"Sembunyikan dalam beg."
+],
+answer:1,
+explanation:"Mendapatkan kebenaran guru mencegah pembawaan barang larangan."
+},
+
+{
+question:"Apakah tindakan yang membantu menjaga nama baik Sekolah Kebangsaan Bachok?",
+choices:[
+"Mematuhi peraturan dan menunjukkan tingkah laku baik.",
+"Melanggar peraturan sekolah.",
+"Mengajak rakan bergaduh."
+],
+answer:0,
+explanation:"Sahsiah terpuji murid menaikkan nama baik dan reputasi sekolah."
+},
+
+{
+question:"Mengapakah murid dilarang membawa barang tajam seperti pisau atau gunting tajam ke sekolah?",
+choices:[
+"Kerana ia boleh membahayakan keselamatan diri dan rakan-rakan.",
+"Kerana beg sekolah akan menjadi terlalu berat.",
+"Kerana harganya mahal."
+],
+answer:0,
+explanation:"Objek tajam berbahaya boleh menyebabkan kecederaan serius jika tidak dikawal."
+},
+
+{
+question:"Mengapakah kita perlu memakai pakaian seragam sekolah yang lengkap dan kemas?",
+choices:[
+"Supaya dapat menunjuk-nunjuk kepada rakan.",
+"Untuk melatih diri berdisiplin, berimej kemas dan mematuhi etika.",
+"Sekadar untuk mengelakkan dimarahi guru."
+],
+answer:1,
+explanation:"Pakaian seragam yang kemas melambangkan jati diri dan disiplin murid SK Bachok."
+},
+
+{
+question:"Apakah amalan yang menunjukkan sikap jujur dan amanah di sekolah?",
+choices:[
+"Menyimpan barang hilang yang dijumpai untuk kegunaan sendiri.",
+"Menyerahkan barang atau wang yang dijumpai di kawasan sekolah kepada guru.",
+"Menuduh rakan mengambil barang tanpa bukti."
+],
+answer:1,
+explanation:"Menyerahkan barang hilang kepada guru adalah amalan bersikap jujur dan berintegriti."
+}
+];
+
+function saveStudentProfile(){
+    const nameEl=document.getElementById("studentNameInput");
+    const classEl=document.getElementById("studentClassInput");
+
+    if(nameEl)studentName=nameEl.value;
+    if(classEl)studentClass=classEl.value;
+
+    setStorage('disiplinku_student_name',studentName);
+    setStorage('disiplinku_student_class',studentClass);
+}
+
+function updateCertStatus(){
+    const reqBox=document.getElementById("certRequirementBox");
+    const certBtn=document.getElementById("certBtn");
+    const icon=document.getElementById("certStatusIcon");
+    const title=document.getElementById("certStatusTitle");
+    const desc=document.getElementById("certStatusDesc");
+    const progressText=document.getElementById("certProgressText");
+    const progressBar=document.getElementById("certProgressBar");
+
+    if(!reqBox)return;
+
+    let percent=Math.min(
+        100,
+        Math.floor((correct/REQUIRED_CORRECT)*100)
+    );
+
+    if(progressBar)
+        progressBar.style.width=percent+"%";
+
+    if(progressText)
+        progressText.textContent=
+        `${correct} / ${REQUIRED_CORRECT} Jawapan Betul (${percent}%)`;
+
+    if(correct>=REQUIRED_CORRECT){
+        reqBox.style.background="#ecfdf5";
+        reqBox.style.borderColor="#6ee7b7";
+        if(icon)icon.textContent="🎉";
+
+        if(title){
+            title.textContent="Tahniah! Sijil Telah Terbuka";
+            title.style.color="#047857";
+        }
+
+        if(desc)
+            desc.textContent=
+            "Kamu telah berjaya menjawab soalan dengan betul dan layak mendapat Sijil Penghargaan!";
+
+        if(progressText)
+            progressText.style.color="#047857";
+
+        if(certBtn){
+            certBtn.style.background="#10b981";
+            certBtn.innerHTML="✨ Jana & Cetak Sijil Rasmi";
+        }
+    }
+    else{
+        reqBox.style.background="#fffbeb";
+        reqBox.style.borderColor="#fcd34d";
+        if(icon)icon.textContent="🔒";
+
+        if(title){
+            title.textContent="Status Sijil: Terkunci";
+            title.style.color="#b45309";
+        }
+
+        if(desc){
+            desc.textContent=
+            `Jawab sekurang-kurangnya ${REQUIRED_CORRECT} soalan dengan betul dalam Cabaran / Kuiz untuk membuka sijil.`;
+        }
+
+        if(progressText)
+            progressText.style.color="#b45309";
+
+        if(certBtn){
+            certBtn.style.background="#f59e0b";
+            certBtn.innerHTML=
+            "🔒 Sijil Terkunci (Selesaikan Cabaran)";
+        }
+    }
+}
+
+function updateScore(){
+    const scoreEl=document.getElementById("score");
+    const correctEl=document.getElementById("correct");
+    const levelEl=document.getElementById("level");
+    const badgeEl=document.getElementById("badgeCount");
+    const progressEl=document.getElementById("progressBar");
+
+    if(scoreEl)
+        scoreEl.textContent=score;
+
+    if(correctEl)
+        correctEl.textContent=correct;
+
+    if(levelEl)
+        levelEl.textContent=
+        Math.max(1,Math.floor(score/30)+1);
+
+    if(badgeEl)
+        badgeEl.textContent=
+        Math.max(1,Math.floor(correct/2)+1);
+
+    if(progressEl){
+        let progress=(score%30)/30*100;
+        progressEl.style.width=progress+"%";
+    }
+
+    setStorage('disiplinku_score',score);
+    setStorage('disiplinku_correct',correct);
+    updateCertStatus();
+}
+
+function showPage(page){
+    playSound('click');
+
+    document.querySelectorAll(".page").forEach(section=>{
+        section.classList.add("hidden");
+    });
+
+    const target=document.getElementById(page);
+    if(target)
+        target.classList.remove("hidden");
+
+    document.querySelectorAll(".nav button").forEach(button=>{
+        button.classList.toggle(
+            "active",
+            button.dataset.page===page
+        );
+    });
+
+    if(page==="game")
+        renderGame();
+
+    if(page==="kuiz")
+        renderQuiz();
+
+    if(page==="pencapaian")
+        updateCertStatus();
+}
+
+function renderGame(){
+    const contentEl=document.getElementById("gameContent");
+    const completeEl=document.getElementById("gameComplete");
+
+    if(gameIndex>=games.length){
+        if(contentEl)
+            contentEl.classList.add("hidden");
+
+        if(completeEl)
+            completeEl.classList.remove("hidden");
+
+        if(typeof confetti==="function"){
+            confetti({
+                particleCount:90,
+                spread:70,
+                origin:{y:.6}
+            });
+        }
+        return;
+    }
+
+    if(contentEl)
+        contentEl.classList.remove("hidden");
+
+    if(completeEl)
+        completeEl.classList.add("hidden");
+
+    const game=games[gameIndex];
+    const numEl=document.getElementById("gameNumber");
+    const qEl=document.getElementById("gameQuestion");
+    const choices=document.getElementById("gameChoices");
+    const fbEl=document.getElementById("gameFeedback");
+    const nextBtn=document.getElementById("gameNext");
+
+    if(numEl)
+        numEl.textContent=
+        `${gameIndex+1} / ${games.length}`;
+
+    if(qEl)
+        qEl.textContent=game.question;
+
+    if(choices){
+        choices.innerHTML="";
+
+        game.choices.forEach((choice,index)=>{
+            const button=document.createElement("button");
+            button.className="choice";
+            button.textContent=choice;
+            button.type="button";
+
+            button.addEventListener("click",()=>{
+                checkAnswer(
+                    index,
+                    game.answer,
+                    game.explanation,
+                    fbEl,
+                    nextBtn,
+                    choices
+                );
+            });
+
+            choices.appendChild(button);
+        });
+    }
+
+    if(fbEl)
+        fbEl.classList.add("hidden");
+
+    if(nextBtn)
+        nextBtn.classList.add("hidden");
+}
+
+function renderQuiz(){
+    const contentEl=document.getElementById("quizContent");
+    const completeEl=document.getElementById("quizComplete");
+
+    if(quizIndex>=quizzes.length){
+        if(contentEl)
+            contentEl.classList.add("hidden");
+
+        if(completeEl)
+            completeEl.classList.remove("hidden");
+
+        if(typeof confetti==="function"){
+            confetti({
+                particleCount:90,
+                spread:70,
+                origin:{y:.6}
+            });
+        }
+        return;
+    }
+
+    if(contentEl)
+        contentEl.classList.remove("hidden");
+
+    if(completeEl)
+        completeEl.classList.add("hidden");
+
+    const quiz=quizzes[quizIndex];
+    const numEl=document.getElementById("quizNumber");
+    const qEl=document.getElementById("quizQuestion");
+    const choices=document.getElementById("quizChoices");
+    const fbEl=document.getElementById("quizFeedback");
+    const nextBtn=document.getElementById("quizNext");
+
+    if(numEl)
+        numEl.textContent=
+        `${quizIndex+1} / ${quizzes.length}`;
+
+    if(qEl)
+        qEl.textContent=quiz.question;
+
+    if(choices){
+        choices.innerHTML="";
+
+        quiz.choices.forEach((choice,index)=>{
+            const button=document.createElement("button");
+            button.className="choice";
+            button.textContent=choice;
+            button.type="button";
+
+            button.addEventListener("click",()=>{
+                checkAnswer(
+                    index,
+                    quiz.answer,
+                    quiz.explanation,
+                    fbEl,
+                    nextBtn,
+                    choices
+                );
+            });
+
+            choices.appendChild(button);
+        });
+    }
+
+    if(fbEl)
+        fbEl.classList.add("hidden");
+
+    if(nextBtn)
+        nextBtn.classList.add("hidden");
+}
+
+function checkAnswer(
+    selected,
+    answer,
+    explanation,
+    feedbackEl,
+    nextBtnEl,
+    choicesEl
+){
+    if(choicesEl){
+        const btns=choicesEl.querySelectorAll("button");
+
+        btns.forEach((btn,idx)=>{
+            btn.disabled=true;
+
+            if(idx===answer)
+                btn.classList.add("correct-choice");
+            else if(idx===selected)
+                btn.classList.add("wrong-choice");
+        });
+    }
+
+    if(selected===answer){
+        playSound('correct');
+        score+=10;
+        correct++;
+
+        if(feedbackEl){
+            feedbackEl.innerHTML=
+            `🎉 <strong>Betul! +10 mata.</strong><br>${explanation}`;
+            feedbackEl.style.background="#dcfce7";
+            feedbackEl.style.color="#15803d";
+        }
+    }
+    else{
+        playSound('wrong');
+
+        if(feedbackEl){
+            feedbackEl.innerHTML=
+            `💡 <strong>Belum tepat.</strong><br>${explanation}`;
+            feedbackEl.style.background="#fee2e2";
+            feedbackEl.style.color="#b91c1c";
+        }
+    }
+
+    if(feedbackEl)
+        feedbackEl.classList.remove("hidden");
+
+    if(nextBtnEl)
+        nextBtnEl.classList.remove("hidden");
+
+    updateScore();
+}
+
+function openCertificate(){
+    playSound('click');
+
+    if(correct<REQUIRED_CORRECT){
+        const modalProgress=
+            document.getElementById("lockedModalProgress");
+
+        if(modalProgress){
+            modalProgress.textContent=
+            `Pencapaian Semasa: ${correct} / ${REQUIRED_CORRECT} Jawapan Betul`;
+        }
+
+        const lockedModal=
+            document.getElementById("lockedModal");
+
+        if(lockedModal)
+            lockedModal.classList.remove("hidden");
+
+        return;
+    }
+
+    saveStudentProfile();
+
+    const nameDisplay=
+        studentName.trim()
+        ? studentName.toUpperCase()
+        : "NAMA MURID";
+
+    const classDisplay=
+        studentClass.trim()
+        ? `KELAS: ${studentClass.toUpperCase()}`
+        : "";
+
+    const certName=
+        document.getElementById("certStudentName");
+
+    const certClass=
+        document.getElementById("certStudentClass");
+
+    const certModal=
+        document.getElementById("certModal");
+
+    if(certName)
+        certName.textContent=nameDisplay;
+
+    if(certClass)
+        certClass.textContent=classDisplay;
+
+    if(certModal)
+        certModal.classList.remove("hidden");
+
+    if(typeof confetti==="function"){
+        confetti({
+            particleCount:100,
+            spread:70,
+            origin:{y:.6}
+        });
+    }
+}
+
+function closeLockedModal(){
+    playSound('click');
+    const lockedModal=
+        document.getElementById("lockedModal");
+
+    if(lockedModal)
+        lockedModal.classList.add("hidden");
+}
+
+function closeCertificate(){
+    playSound('click');
+    const certModal=
+        document.getElementById("certModal");
+
+    if(certModal)
+        certModal.classList.add("hidden");
+}
+
+window.updateScore=updateScore;
+window.saveStudentProfile=saveStudentProfile;
+window.openCertificate=openCertificate;
+window.closeLockedModal=closeLockedModal;
+window.closeCertificate=closeCertificate;
+window.showPage=showPage;
+
+window.addEventListener('DOMContentLoaded',()=>{
+
+    document.querySelectorAll(".nav button").forEach(button=>{
+        button.addEventListener(
+            "click",
+            ()=>showPage(button.dataset.page)
+        );
+    });
+
+    document.querySelectorAll("[data-go]").forEach(button=>{
+        button.addEventListener(
+            "click",
+            ()=>showPage(button.dataset.go)
+        );
+    });
+
+    const gameNextBtn=
+        document.getElementById("gameNext");
+
+    if(gameNextBtn){
+        gameNextBtn.addEventListener("click",()=>{
+            playSound('click');
+            gameIndex++;
+            renderGame();
+        });
+    }
+
+    const quizNextBtn=
+        document.getElementById("quizNext");
+
+    if(quizNextBtn){
+        quizNextBtn.addEventListener("click",()=>{
+            playSound('click');
+            quizIndex++;
+            renderQuiz();
+        });
+    }
+
+    const nameInput=
+        document.getElementById("studentNameInput");
+
+    const classInput=
+        document.getElementById("studentClassInput");
+
+    if(nameInput && studentName)
+        nameInput.value=studentName;
+
+    if(classInput && studentClass)
+        classInput.value=studentClass;
+
+    updateScore();
+    renderGame();
+    renderQuiz();
+});
+</script>
+</body>
+</html>
