@@ -1170,6 +1170,7 @@ body{
                 </p>
 
                 <div style="margin:14px 0 22px;">
+
                     <span
                         id="certStudentName"
                         style="font-size:24px;font-weight:900;color:#2563eb;text-decoration:underline;text-decoration-color:#f59e0b;display:block;text-transform:uppercase;">
@@ -1181,6 +1182,13 @@ body{
                         style="font-size:14px;font-weight:bold;color:#4b5563;margin-top:6px;display:block;">
                         KELAS
                     </span>
+
+                    <span
+                        id="certStudentScore"
+                        style="font-size:13px;font-weight:bold;color:#d97706;margin-top:6px;display:block;">
+                        ⭐ JUMLAH MATA DISIPLIN: 0 MATA
+                    </span>
+
                 </div>
 
                 <p style="font-size:13px;color:#374151;line-height:1.7;max-width:440px;margin:0 auto;">
@@ -1800,63 +1808,94 @@ function checkAnswer(
 }
 
 function openCertificate(){
+
     playSound('click');
 
+
     if(correct<REQUIRED_CORRECT){
+
         const modalProgress=
             document.getElementById("lockedModalProgress");
 
+
         if(modalProgress){
+
             modalProgress.textContent=
             `Pencapaian Semasa: ${correct} / ${REQUIRED_CORRECT} Jawapan Betul`;
+
         }
+
 
         const lockedModal=
             document.getElementById("lockedModal");
 
+
         if(lockedModal)
             lockedModal.classList.remove("hidden");
 
+
         return;
+
     }
 
+
     saveStudentProfile();
+
 
     const nameDisplay=
         studentName.trim()
         ? studentName.toUpperCase()
         : "NAMA MURID";
 
+
     const classDisplay=
         studentClass.trim()
         ? `KELAS: ${studentClass.toUpperCase()}`
         : "";
 
+
     const certName=
         document.getElementById("certStudentName");
+
 
     const certClass=
         document.getElementById("certStudentClass");
 
+
+    const certScore=
+        document.getElementById("certStudentScore");
+
+
     const certModal=
         document.getElementById("certModal");
+
 
     if(certName)
         certName.textContent=nameDisplay;
 
+
     if(certClass)
         certClass.textContent=classDisplay;
+
+
+    if(certScore)
+        certScore.textContent=`⭐ JUMLAH MATA DISIPLIN: ${score} MATA`;
+
 
     if(certModal)
         certModal.classList.remove("hidden");
 
+
     if(typeof confetti==="function"){
+
         confetti({
             particleCount:100,
             spread:70,
             origin:{y:.6}
         });
+
     }
+
 }
 
 function closeLockedModal(){
